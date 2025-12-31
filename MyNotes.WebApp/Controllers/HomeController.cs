@@ -6,6 +6,7 @@ namespace MyNotes.WebApp.Controllers
     {
         // GET: Home
         // Yorum alanı
+        // Bir başka yorum satırı
         public ActionResult Index()
         {
             return View();
