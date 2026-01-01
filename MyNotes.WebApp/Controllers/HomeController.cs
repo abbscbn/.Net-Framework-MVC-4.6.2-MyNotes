@@ -8,6 +8,8 @@ namespace MyNotes.WebApp.Controllers
 
         public ActionResult Index()
         {
+            BusinessLayer.Test test = new BusinessLayer.Test();
+
             return View();
         }
     }
