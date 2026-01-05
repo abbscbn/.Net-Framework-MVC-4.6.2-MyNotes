@@ -4,8 +4,10 @@
     {
         public Test()
         {
-            DataAccessLayer.DatabaseContext db = new DataAccessLayer.DatabaseContext();
-            db.Database.CreateIfNotExists();
+            using (var db = new DataAccessLayer.DatabaseContext())
+            {
+                db.Database.Initialize(true);
+            }
         }
     }
 }

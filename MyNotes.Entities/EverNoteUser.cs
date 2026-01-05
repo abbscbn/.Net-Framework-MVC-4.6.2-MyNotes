@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,7 +24,7 @@ namespace MyNotes.Entities
         public bool IsAdmin { get; set; }
 
         [Required]
-        public bool ActiveGuid { get; set; }
+        public Guid ActiveGuid { get; set; }
 
         public virtual List<Note> Notes { get; set; }
 

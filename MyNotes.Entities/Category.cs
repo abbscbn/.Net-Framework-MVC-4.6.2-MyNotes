@@ -15,6 +15,11 @@ namespace MyNotes.Entities
 
         public virtual List<Note> Notes { get; set; }
 
+        public Category()
+        {
+            Notes = new List<Note>();
+        }
+
 
 
     }

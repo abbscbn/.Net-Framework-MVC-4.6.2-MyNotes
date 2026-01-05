@@ -12,11 +12,18 @@ namespace MyNotes.DataAccessLayer
 
         public DbSet<Comment> Comments { get; set; }
 
-        public DbSet<EverNoteUser> Users { get; set; }
+        public DbSet<EverNoteUser> EvernoteUsers { get; set; }
 
         public DbSet<Liked> Likes { get; set; }
 
         public DbSet<Note> Notes { get; set; }
+
+
+        public DatabaseContext() : base("DatabaseContext")
+        {
+
+            Database.SetInitializer(new MyInitalizer());
+        }
 
 
 
