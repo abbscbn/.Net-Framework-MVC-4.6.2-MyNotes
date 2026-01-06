@@ -1,7 +1,7 @@
 ﻿using MyNotes.Entities;
 using System.Data.Entity;
 
-namespace MyNotes.DataAccessLayer
+namespace MyNotes.DataAccessLayer.EntityFramework
 {
     public class DatabaseContext : DbContext
     {

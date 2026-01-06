@@ -59,6 +59,10 @@
       <Project>{0328f766-48d6-42c9-893a-50a8f3b893c6}</Project>
       <Name>MyNotes.DataAccessLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyNotes.Entities\MyNotes.Entities.csproj">
+      <Project>{5CE7F2FB-1DA9-4F6B-A1DE-8453D674323A}</Project>
+      <Name>MyNotes.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

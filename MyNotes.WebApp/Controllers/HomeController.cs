@@ -10,6 +10,13 @@ namespace MyNotes.WebApp.Controllers
         {
             BusinessLayer.Test test = new BusinessLayer.Test();
 
+            //test.InsertTest();
+            //test.UpdateTest();
+            //test.DeleteTest();
+            //test.CommentTest();
+
+            test.CategoryTest();
+
             return View();
         }
     }

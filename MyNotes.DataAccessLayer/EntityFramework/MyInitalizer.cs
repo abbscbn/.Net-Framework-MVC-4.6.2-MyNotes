@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace MyNotes.DataAccessLayer
+namespace MyNotes.DataAccessLayer.EntityFramework
 {
     public class MyInitalizer : CreateDatabaseIfNotExists<DatabaseContext>
     {
