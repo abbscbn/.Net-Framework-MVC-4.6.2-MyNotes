@@ -1,4 +1,25 @@
-﻿.bi-suit-heart:hover{
-    color:red;
-    cursor:pointer;
+﻿
+
+.like-btn {
+    transition: all 0.2s ease-in-out;
 }
+
+    .like-btn:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .like-btn i {
+        margin-right: 4px;
+    }
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+

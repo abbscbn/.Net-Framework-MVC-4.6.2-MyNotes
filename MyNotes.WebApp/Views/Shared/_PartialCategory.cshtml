@@ -1,0 +1,23 @@
+﻿@using MyNotes.BusinessLayer;
+@using MyNotes.Entities;
+
+@{
+    //Kategori listesini veritabanından çekip burada göstereceğiz
+    CategoryManager cm = new CategoryManager();
+    List<Category> list = cm.GetAllCategorys();
+}
+
+
+
+<div>
+    <p class="text-center lead">Kategoriler</p>
+</div>
+
+@foreach (Category cat in list)
+{
+    <div class="list-group">
+        <a href="/Home/ByCategory/@cat.Id" title="@cat.Description" class="list-group-item">@cat.Title</a>
+
+    </div>
+}
+

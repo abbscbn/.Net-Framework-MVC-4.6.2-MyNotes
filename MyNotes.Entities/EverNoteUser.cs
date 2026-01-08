@@ -19,6 +19,8 @@ namespace MyNotes.Entities
 
         [Required, StringLength(50)]
         public string Password { get; set; }
+
+        [Required, StringLength(30)]
         public string Username { get; set; }
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }

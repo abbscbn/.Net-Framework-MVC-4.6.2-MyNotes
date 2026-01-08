@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "About";
+}
+
+<div class="container-xxl">
+    <div class="row">
+        <!-- Side widgets-->
+        <div class="col-md-3">
+            <!-- Search widget-->
+            @*<div class="card mb-4">
+                    <div class="card-header">Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                        </div>
+                    </div>
+                </div>*@
+            <!-- Categories widget-->
+            <div class="mb-4 col-lg-12">
+                @Html.Partial("_PartialCategory")
+            </div>
+
+        </div>
+        <!-- Blog entries-->
+        <div class="col-md-9">
+
+            <!-- Nested row for non-featured blog posts-->
+            <div class="row">
+
+                
+
+                <div class="col-lg-10 offset-1">
+
+                    <h2 class="text-center">Hakkımızda</h2>
+
+                    <p>
+                        MyNotes, kullanıcıların notlarını kolayca oluşturup yönetebilecekleri, kategorilere ayırabilecekleri ve diğer kullanıcılarla paylaşabilecekleri bir platformdur. Amacımız, bilgi ve fikirlerin paylaşımını teşvik ederek, kullanıcıların daha verimli ve organize olmalarına yardımcı olmaktır.
+                    </p>
+                    <p>
+                        Platformumuz, kullanıcı dostu arayüzü ve güçlü özellikleri ile not alma deneyimini en üst düzeye çıkarmayı hedefler. Kategoriler sayesinde notlarınızı düzenleyebilir, etiketleme sistemi ile hızlı erişim sağlayabilirsiniz. Ayrıca, notlarınızı diğer kullanıcılarla paylaşarak bilgi alışverişinde bulunabilirsiniz.
+                    </p>
+                    <p>
+                        MyNotes ekibi olarak, kullanıcılarımızın geri bildirimlerine büyük önem veriyoruz. Platformumuzu sürekli olarak geliştirmek ve kullanıcı deneyimini iyileştirmek için çalışıyoruz. Her türlü öneri ve görüşlerinizi bizimle paylaşmaktan çekinmeyin.
+                    </p>
+                    <p>
+                        MyNotes'u tercih ettiğiniz için teşekkür ederiz. Not alma ve paylaşma deneyiminizi en iyi hale getirmek için buradayız!
+                    </p>
+
+
+                </div>
+           
+        </div>
+
+    </div>
+</div>
+
