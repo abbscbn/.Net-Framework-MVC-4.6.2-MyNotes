@@ -46,9 +46,14 @@
     <Compile Include="Comment.cs" />
     <Compile Include="EverNoteUser.cs" />
     <Compile Include="Liked.cs" />
+    <Compile Include="Messages\ErrorMessageCode.cs" />
+    <Compile Include="Messages\ErrorMessageObj.cs" />
     <Compile Include="MyEntityBase.cs" />
     <Compile Include="Note.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueObjects\LoginViewModel.cs" />
+    <Compile Include="ValueObjects\RegisterViewModel.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

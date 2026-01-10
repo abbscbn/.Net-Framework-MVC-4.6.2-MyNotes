@@ -1,4 +1,5 @@
 ﻿using MyNotes.DataAccessLayer.Abstract;
+using MyNotes.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -29,8 +30,20 @@ namespace MyNotes.DataAccessLayer.EntityFramework
 
         public int Insert(T obj)
         {
-
             _objectSet.Add(obj);
+
+            if (obj is MyEntityBase)
+            {
+
+                MyEntityBase o = obj as MyEntityBase;
+
+                DateTime now = DateTime.Now;
+
+                o.CreatedOn = now;
+                o.ModifedOn = now;
+                o.ModifiedUsername = "system"; // TODO:: işlem yapan kullanıcı adı ile değiştirilecek
+            }
+
             return Save();
 
         }

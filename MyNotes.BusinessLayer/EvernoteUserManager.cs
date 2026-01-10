@@ -1,0 +1,77 @@
+﻿using MyNotes.DataAccessLayer.EntityFramework;
+using MyNotes.Entities;
+using MyNotes.Entities.Messages;
+using MyNotes.Entities.ValueObjects;
+using System;
+
+namespace MyNotes.BusinessLayer
+{
+    public class EvernoteUserManager
+    {
+
+        private Repository<EverNoteUser> repo_user = new Repository<EverNoteUser>();
+        private BusinessLayerResult<EverNoteUser> res = new BusinessLayerResult<EverNoteUser>();
+
+        public BusinessLayerResult<EverNoteUser> RegisterUser(RegisterViewModel data)
+        {
+            EverNoteUser user = repo_user.Find(x => x.Username == data.Username || x.Email == data.Email);
+
+            if (user != null)
+            {
+                if (data.Username == user.Username)
+                {
+                    res.AddError(ErrorMessageCode.UsernameAlreadyExists, "Kullanıcı adı çoktan kayıtlı");
+                }
+                if (data.Email == user.Email)
+                {
+                    res.AddError(ErrorMessageCode.EmailAlreadyExists, "Kullanıcı adı veya e-posta adresi kayıtlı.");
+                }
+            }
+            else
+            {
+                user = new EverNoteUser()
+                {
+                    Username = data.Username,
+                    Surname = "test",
+                    Email = data.Email,
+                    Password = data.Password,
+                    ActiveGuid = Guid.NewGuid(),
+                    IsActive = false,
+                    IsAdmin = false
+                };
+
+                int dbResult = repo_user.Insert(user);
+
+                if (dbResult > 0)
+                {
+                    res.Result = repo_user.Find(x => x.Username == user.Username);
+                }
+
+            }
+            return res;
+        }
+
+        public BusinessLayerResult<EverNoteUser> Login(LoginViewModel data)
+        {
+
+            res.Result = repo_user.Find(x => x.Email == data.Email && x.Password == data.Password);
+
+            if (res.Result != null)
+            {
+
+                if (!res.Result.IsActive)
+                {
+                    res.AddError(ErrorMessageCode.UserIsNotActive, "Lütfen hesabınızı aktifleştirin.");
+
+                    return res;
+                }
+            }
+            else
+            {
+                res.AddError(ErrorMessageCode.EmailOrPasswordWrong, "Kullanıcı email veya şifre hatalı.");
+            }
+            return res;
+
+        }
+    }
+}

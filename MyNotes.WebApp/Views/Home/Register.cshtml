@@ -1,4 +1,4 @@
-﻿@using MyNotes.WebApp.ViewModels
+﻿@using MyNotes.Entities.ValueObjects
 @model RegisterViewModel
 @{
     ViewBag.Title = "Register";
@@ -10,6 +10,22 @@
 <!------ Include the above in your HEAD tag ---------->
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+<style type="text/css">
+    .validation-summary-errors {
+        border: 1px solid black;
+        border-radius: 8px;
+        background-color: #df4747;
+        color: white;
+    }
+        .validation-summary-errors ul {
+            padding:10px;
+        }
+
+    .validation-summary-errors li{
+        list-style-type: none;
+    }
+</style>
 
 
 <div class="container">
@@ -23,8 +39,11 @@
             <div class="col-md-6">
 
                 <article class="card-body">
-                    <h4 class="card-title text-center mb-4 mt-1">Kayıt Ol</h4>
+                    <h4 class="card-title text-center mb-4 mt-1">Kayıt Formu</h4>
                     <hr>
+
+                    @Html.ValidationSummary(false);
+
                     @*<p class="text-success text-center">Some message goes here</p>*@
                     <form>
 

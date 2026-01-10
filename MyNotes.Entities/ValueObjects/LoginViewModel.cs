@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MyNotes.WebApp.ViewModels
+namespace MyNotes.Entities.ValueObjects
 {
     public class LoginViewModel
     {
