@@ -54,7 +54,7 @@ namespace MyNotes.BusinessLayer
         public BusinessLayerResult<EverNoteUser> Login(LoginViewModel data)
         {
 
-            res.Result = repo_user.Find(x => x.Email == data.Email && x.Password == data.Password);
+            res.Result = repo_user.Find(x => x.Username == data.Username && x.Password == data.Password);
 
             if (res.Result != null)
             {
@@ -68,7 +68,7 @@ namespace MyNotes.BusinessLayer
             }
             else
             {
-                res.AddError(ErrorMessageCode.EmailOrPasswordWrong, "Kullanıcı email veya şifre hatalı.");
+                res.AddError(ErrorMessageCode.EmailOrPasswordWrong, "Kullanıcı adı veya şifre hatalı.");
             }
             return res;
 

@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using MyNotes.Common;
+using MyNotes.WebApp.Inýt;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -13,6 +11,7 @@ namespace MyNotes.WebApp
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            App.Common = new WebCommon();
         }
     }
 }

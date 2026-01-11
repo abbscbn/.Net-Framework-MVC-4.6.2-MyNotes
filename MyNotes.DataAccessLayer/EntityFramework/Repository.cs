@@ -1,4 +1,5 @@
-﻿using MyNotes.DataAccessLayer.Abstract;
+﻿using MyNotes.Common;
+using MyNotes.DataAccessLayer.Abstract;
 using MyNotes.Entities;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace MyNotes.DataAccessLayer.EntityFramework
 
                 o.CreatedOn = now;
                 o.ModifedOn = now;
-                o.ModifiedUsername = "system"; // TODO:: işlem yapan kullanıcı adı ile değiştirilecek
+                o.ModifiedUsername = App.Common.getCurrentUsername(); // Şu anki kullanıcı adı
             }
 
             return Save();

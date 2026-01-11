@@ -59,6 +59,10 @@
     <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MyNotes.Common\MyNotes.Common.csproj">
+      <Project>{3ccf1b0d-76ce-4537-a0a7-4b8b5a414ccd}</Project>
+      <Name>MyNotes.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyNotes.DataAccessLayer\MyNotes.DataAccessLayer.csproj">
       <Project>{0328f766-48d6-42c9-893a-50a8f3b893c6}</Project>
       <Name>MyNotes.DataAccessLayer</Name>

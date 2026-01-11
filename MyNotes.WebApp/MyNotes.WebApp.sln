@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNotes.DataAccessLayer", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNotes.Entities", "..\MyNotes.Entities\MyNotes.Entities.csproj", "{5CE7F2FB-1DA9-4F6B-A1DE-8453D674323A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNotes.Common", "..\MyNotes.Common\MyNotes.Common.csproj", "{3CCF1B0D-76CE-4537-A0A7-4B8B5A414CCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5CE7F2FB-1DA9-4F6B-A1DE-8453D674323A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CE7F2FB-1DA9-4F6B-A1DE-8453D674323A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CE7F2FB-1DA9-4F6B-A1DE-8453D674323A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CCF1B0D-76CE-4537-A0A7-4B8B5A414CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CCF1B0D-76CE-4537-A0A7-4B8B5A414CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CCF1B0D-76CE-4537-A0A7-4B8B5A414CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CCF1B0D-76CE-4537-A0A7-4B8B5A414CCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

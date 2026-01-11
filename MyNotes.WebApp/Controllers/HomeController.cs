@@ -175,6 +175,12 @@ namespace MyNotes.WebApp.Controllers
             // Session'a kullanıcı bilgilerini atama
         }
 
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index");
+        }
+
 
         public ActionResult RegisterOk()
         {
