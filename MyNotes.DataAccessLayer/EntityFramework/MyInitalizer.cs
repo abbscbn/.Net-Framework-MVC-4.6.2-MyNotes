@@ -22,6 +22,7 @@ namespace MyNotes.DataAccessLayer.EntityFramework
                 IsActive = true,
                 IsAdmin = true,
                 ActiveGuid = Guid.NewGuid(),
+                ProfileImageFilename = "user.webp",
                 CreatedOn = DateTime.Now,
                 ModifedOn = DateTime.Now.AddMinutes(5),
                 ModifiedUsername = "abbas"
@@ -38,6 +39,7 @@ namespace MyNotes.DataAccessLayer.EntityFramework
                 IsActive = true,
                 IsAdmin = false,
                 ActiveGuid = Guid.NewGuid(),
+                ProfileImageFilename = "user.webp",
                 CreatedOn = DateTime.Now,
                 ModifedOn = DateTime.Now.AddMinutes(5),
                 ModifiedUsername = "abbas"
@@ -61,6 +63,7 @@ namespace MyNotes.DataAccessLayer.EntityFramework
                     IsActive = true,
                     IsAdmin = false,
                     ActiveGuid = Guid.NewGuid(),
+                    ProfileImageFilename = "user.webp",
                     CreatedOn = DateTime.Now,
                     ModifedOn = DateTime.Now,
                     ModifiedUsername = "abbas"

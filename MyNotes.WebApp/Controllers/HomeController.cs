@@ -2,6 +2,8 @@
 using MyNotes.Entities;
 using MyNotes.Entities.Messages;
 using MyNotes.Entities.ValueObjects;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -82,7 +84,7 @@ namespace MyNotes.WebApp.Controllers
 
                     if (res.Errors.Find(x => x.Code == ErrorMessageCode.UserIsNotActive) != null)
                     {
-                        ViewBag.ActivationMessage = "http://Home/Index/123-1234-1234-123"; // örnek aktivasyon linki
+                        ModelState.AddModelError("", "Hesabınız aktifleştirilmemiştir. Lütfen email adresinizi kontrol ediniz.");
                     }
 
                     res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
@@ -185,6 +187,96 @@ namespace MyNotes.WebApp.Controllers
         public ActionResult RegisterOk()
         {
             return View();
+        }
+
+        public ActionResult UserActivate(Guid id)
+        {
+            EvernoteUserManager eum = new EvernoteUserManager();
+            BusinessLayerResult<EverNoteUser> res = eum.UserActivate(id);
+
+            if (res.Errors.Count > 0)
+            {
+
+                TempData["errors"] = res.Errors;
+
+
+                return RedirectToAction("UserActivateCancel");
+
+            }
+            return RedirectToAction("UserActivateOk");
+        }
+
+        public ActionResult UserActivateOk()
+        {
+            return View();
+
+        }
+
+        public ActionResult UserActivateCancel()
+        {
+
+            if (TempData["errors"] != null)
+            {
+
+                List<ErrorMessageObj> errorMessageObjs = TempData["errors"] as List<ErrorMessageObj>;
+                errorMessageObjs.ForEach(x => ModelState.AddModelError("", x.Message));
+
+            }
+
+            return View();
+        }
+
+
+        public ActionResult ShowProfile()
+        {
+            if (Session["login"] != null)
+            {
+
+                EverNoteUser currentUser = Session["login"] as EverNoteUser;
+                EvernoteUserManager eum = new EvernoteUserManager();
+                BusinessLayerResult<EverNoteUser> res = eum.GetUserById(currentUser.Id);
+
+                if (res.Errors.Count > 0)
+                {
+                    res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
+                    return RedirectToAction("Index"); // Hata varsa anasayfaya yönlendir
+                }
+                return View(res.Result);
+
+            }
+
+            return RedirectToAction("Index");
+
+        }
+
+        public ActionResult EditProfile(EverNoteUser model)
+        {
+            if (ModelState.IsValid)
+            {
+                EvernoteUserManager eum = new EvernoteUserManager();
+                BusinessLayerResult<EverNoteUser> res = eum.UpdateUser(model);
+                if (res.Errors.Count > 0)
+                {
+                    res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
+                    return View(model);
+                }
+                Session["login"] = res.Result;
+                return RedirectToAction("ShowProfile");
+            }
+            return View(model);
+        }
+
+        public ActionResult DeleteProfile(int id)
+        {
+            EvernoteUserManager eum = new EvernoteUserManager();
+            BusinessLayerResult<EverNoteUser> res = eum.DeleteUser(id);
+            if (res.Errors.Count > 0)
+            {
+                res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
+                return RedirectToAction("ShowProfile");
+            }
+            Session.Clear();
+            return RedirectToAction("Index");
         }
     }
 }

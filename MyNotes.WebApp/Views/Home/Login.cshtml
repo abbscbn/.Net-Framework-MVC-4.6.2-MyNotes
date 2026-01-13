@@ -15,8 +15,8 @@
     .validation-summary-errors {
         border: 1px solid black;
         border-radius: 8px;
-        background-color: #df4747;
-        color: white;
+        background-color: #f8f9fa;
+        color: black;
     }
 
         .validation-summary-errors ul {
@@ -44,20 +44,13 @@
                 <hr>
                 @Html.ValidationSummary(false)
                 @*<p class="text-success text-center">Some message goes here</p>*@
-
-                @if (ViewBag.ActivationMessage != null)
-                {
-                    <div class="alert alert-success text-center">
-                      
-                        <a  class="btn btn-primary" href="@ViewBag.ActivationMessage">Aktifle</a>
-                       
-                    </div>
-                }
+                <br />
+               
                 <form>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
+                                <span class="input-group-text"> <i class="fas fa-user"></i> </span>
                             </div>
                             @Html.TextBoxFor(model => model.Username, new { @class = "form-control", placeholder = "Kullanıcı adı", type = "text" })
                             @*<input name="" class="form-control" placeholder="Email" type="email">*@

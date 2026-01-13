@@ -16,7 +16,7 @@ namespace MyNotes.WebApp.Inıt
             }
             else
             {
-                return null;
+                return "System";
             }
         }
     }

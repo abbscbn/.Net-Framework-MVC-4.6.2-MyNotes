@@ -1,4 +1,5 @@
-﻿using MyNotes.DataAccessLayer.EntityFramework;
+﻿using MyNotes.Common.Helpers;
+using MyNotes.DataAccessLayer.EntityFramework;
 using MyNotes.Entities;
 using MyNotes.Entities.Messages;
 using MyNotes.Entities.ValueObjects;
@@ -45,6 +46,13 @@ namespace MyNotes.BusinessLayer
                 if (dbResult > 0)
                 {
                     res.Result = repo_user.Find(x => x.Username == user.Username);
+
+                    string siteUri = ConfigHelper.Get<string>("SiteRootUri");
+                    string activateUri = $"{siteUri}/Home/UserActivate/{res.Result.ActiveGuid}";
+                    string body = $"{res.Result.Username} Hesabınızı aktifleştirmek için <a href='{activateUri}' target='_blank'>tıklayınız.</a>";
+                    MailHelper.SendMail(body, res.Result.Email, "MyNotes Hesap Aktifleştirme");
+
+
                 }
 
             }
@@ -72,6 +80,59 @@ namespace MyNotes.BusinessLayer
             }
             return res;
 
+        }
+
+        public BusinessLayerResult<EverNoteUser> UserActivate(Guid id)
+        {
+
+            res.Result = repo_user.Find(x => x.ActiveGuid == id);
+
+            if (res.Result != null)
+            {
+                if (res.Result.IsActive)
+                {
+                    res.AddError(ErrorMessageCode.UserAlreadyActive, "Kullanıcı zaten aktif edilmiştir.");
+                    return res;
+                }
+
+                res.Result.IsActive = true;
+
+                int dbResult = repo_user.Update(res.Result);
+
+                if (dbResult < 1)
+                {
+                    res.AddError(ErrorMessageCode.UserCouldNotActive, "Kullanıcı aktif edilemedi.");
+                    return res;
+                }
+            }
+            else
+            {
+                res.AddError(ErrorMessageCode.ActivationIdDoesNotExists, "Aktifleştirilecek kullanıcı bulunamadı.");
+            }
+            return res;
+        }
+
+        public BusinessLayerResult<EverNoteUser> GetUserById(int ıd)
+        {
+
+            res.Result = repo_user.Find(x => x.Id == ıd);
+
+            if (res.Result == null)
+            {
+                res.AddError(ErrorMessageCode.UserNotFound, "Kullanıcı bulunamadı.");
+            }
+
+            return res;
+        }
+
+        public BusinessLayerResult<EverNoteUser> UpdateUser(EverNoteUser model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BusinessLayerResult<EverNoteUser> DeleteUser(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

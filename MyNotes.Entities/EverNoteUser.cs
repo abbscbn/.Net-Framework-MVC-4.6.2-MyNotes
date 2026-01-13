@@ -22,6 +22,9 @@ namespace MyNotes.Entities
 
         [Required, StringLength(30)]
         public string Username { get; set; }
+
+        [StringLength(30)]
+        public string ProfileImageFilename { get; set; }
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
 
