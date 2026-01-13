@@ -2,6 +2,7 @@
 using MyNotes.Entities;
 using MyNotes.Entities.Messages;
 using MyNotes.Entities.ValueObjects;
+using MyNotes.WebApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,6 @@ namespace MyNotes.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
 
         public ActionResult Index()
         {
@@ -126,55 +126,17 @@ namespace MyNotes.WebApp.Controllers
                     return View(model);
                 }
 
+                OkViewModel okViewModel = new OkViewModel();
+                okViewModel.Items = new List<string>();
+                okViewModel.Items.Add("Kayıt işleminiz başarıyla gerçekleştirilmiştir. Lütfen email adresinize gönderilen aktivasyon linkine tıklayarak hesabınızı aktifleştiriniz.");
+                okViewModel.RedirectingUrl = "/Home/Login";
 
-                return RedirectToAction("RegisterOk");
+                return View("Ok", okViewModel);
             }
-
-
 
 
             return View(model);
 
-
-
-
-
-
-            //bool hasError = false;
-            //// şimdilik test amaçlı
-            //if (ModelState.IsValid)
-            //{
-            //    if (model.Username == "aaa")
-            //    {
-            //        ModelState.AddModelError("", "Bu kullanıcı adı zaten kayıtlı.");
-            //        hasError = true;
-            //    }
-
-            //    if (model.Email == "aaa@mail.com")
-            //    {
-            //        ModelState.AddModelError("", "bu email zaten kayıtlı.");
-            //        hasError = true;
-            //    }
-
-            //    // Kayıt işlemi
-            //}
-
-            //// başka bir yöntem
-            //foreach (var item in ModelState)
-            //{
-            //    if (item.Value.Errors.Count > 0)
-            //    {
-            //        return View(model);
-            //    }
-            //}
-
-            //if (hasError)
-            //{
-            //    return View(model);
-            //}
-
-            // Hata kontrolü
-            // Session'a kullanıcı bilgilerini atama
         }
 
         public ActionResult Logout()
@@ -184,11 +146,6 @@ namespace MyNotes.WebApp.Controllers
         }
 
 
-        public ActionResult RegisterOk()
-        {
-            return View();
-        }
-
         public ActionResult UserActivate(Guid id)
         {
             EvernoteUserManager eum = new EvernoteUserManager();
@@ -197,35 +154,21 @@ namespace MyNotes.WebApp.Controllers
             if (res.Errors.Count > 0)
             {
 
-                TempData["errors"] = res.Errors;
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+
+                errorViewModel.Items = res.Errors;
 
 
-                return RedirectToAction("UserActivateCancel");
-
-            }
-            return RedirectToAction("UserActivateOk");
-        }
-
-        public ActionResult UserActivateOk()
-        {
-            return View();
-
-        }
-
-        public ActionResult UserActivateCancel()
-        {
-
-            if (TempData["errors"] != null)
-            {
-
-                List<ErrorMessageObj> errorMessageObjs = TempData["errors"] as List<ErrorMessageObj>;
-                errorMessageObjs.ForEach(x => ModelState.AddModelError("", x.Message));
+                return View("Error", errorViewModel);
 
             }
 
-            return View();
-        }
+            OkViewModel okViewModel = new OkViewModel();
+            okViewModel.Items = new List<string>();
+            okViewModel.Items.Add("Hesabınız başarıyla aktifleştirilmiştir.");
 
+            return View("Ok", okViewModel);
+        }
 
         public ActionResult ShowProfile()
         {
@@ -238,8 +181,10 @@ namespace MyNotes.WebApp.Controllers
 
                 if (res.Errors.Count > 0)
                 {
-                    res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
-                    return RedirectToAction("Index"); // Hata varsa anasayfaya yönlendir
+                    ErrorViewModel errorViewModel = new ErrorViewModel();
+                    errorViewModel.Items = res.Errors;
+                    errorViewModel.Title = "Profil Bulunamadı";
+                    return View("Error", errorViewModel);
                 }
                 return View(res.Result);
 
@@ -278,5 +223,8 @@ namespace MyNotes.WebApp.Controllers
             Session.Clear();
             return RedirectToAction("Index");
         }
+
+
+
     }
 }

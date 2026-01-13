@@ -1,0 +1,89 @@
+﻿@using MyNotes.WebApp.ViewModels
+@model WarningViewModel
+
+@{
+    ViewBag.Title = "Bilgilendirme Sayfası";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+
+            <div class="card shadow-lg border-0 text-center p-4">
+
+                <!-- ÜST BAŞLIK -->
+                <h5 class="text-muted mb-3">
+                    @Model.Header
+                </h5>
+
+                <!-- ICON + DURUM -->
+                <div class="my-3">
+                    <i class="bi-exclamation-triangle-fill display-1 text-warning"></i>
+                </div>
+
+                <h3 class="fw-bold text-warning">
+                    @Model.Title
+                </h3>
+
+                <!-- MESAJ -->
+                @foreach (string msg in Model.Items)
+                {
+                    <p class="text-secondary mt-3">
+                        @msg
+                    </p>
+                }
+
+
+                @if (Model.IsRedirectingUrl)
+                {
+                    <!-- GERİ SAYIM -->
+                    <p class="small text-muted mt-4">
+                        <i class="bi bi-clock-history"></i>
+                        <span id="countdown">@Model.RedirectingTimeout</span> saniye içinde yönlendirileceksiniz...
+                    </p>
+
+                    <!-- BUTON -->
+                    <a href="@Model.RedirectingUrl" class="btn btn-outline-info mt-3">
+                        <i class="bi bi-arrow-right-circle"></i> Devam Et
+                    </a>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $("header").hide();
+    $("footer").hide();
+</script>
+
+
+@if (Model.IsRedirectingUrl)
+{
+    <script>
+      let seconds = @Model.RedirectingTimeout;
+      const el = document.getElementById("countdown");
+
+        setInterval(() => {
+        seconds--;
+        el.innerText = seconds;
+
+        if (seconds <= 0) {
+         window.location.href = "@Model.RedirectingUrl";
+        }
+        }, 1000);
+    </script>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("h1").hide();
+            $("footer").hide();
+        });
+    </script>
+}
+
+

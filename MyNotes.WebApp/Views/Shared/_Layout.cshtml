@@ -23,7 +23,7 @@
 
 
     @*Eğer bootstrap 5 versiyonunu kullanıyorsam artık jquery kullanmama gerek yok*@
-    @*<script src="~/Scripts/jquery-3.7.1.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
     <!--buradaki ekleme sırası jquery ilk önce olacak çünkü, bootstrap jquery e bağlıdır ilk önce onun tanımlanması gerekir-->
 
 
@@ -147,6 +147,6 @@
 
     </footer>
     <!-- Bootstrap core JS-->
-
+    @RenderSection("scripts", required: false)
 </body>
 </html>
