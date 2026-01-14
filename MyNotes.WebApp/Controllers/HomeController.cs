@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace MyNotes.WebApp.Controllers
@@ -194,20 +195,58 @@ namespace MyNotes.WebApp.Controllers
 
         }
 
-        public ActionResult EditProfile(EverNoteUser model)
+        public ActionResult EditProfile()
         {
-            if (ModelState.IsValid)
+            if (Session["login"] != null)
             {
+                EverNoteUser currentUser = Session["login"] as EverNoteUser;
                 EvernoteUserManager eum = new EvernoteUserManager();
-                BusinessLayerResult<EverNoteUser> res = eum.UpdateUser(model);
+                BusinessLayerResult<EverNoteUser> res = eum.GetUserById(currentUser.Id);
                 if (res.Errors.Count > 0)
                 {
-                    res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
-                    return View(model);
+                    ErrorViewModel errorViewModel = new ErrorViewModel();
+                    errorViewModel.Items = res.Errors;
+                    errorViewModel.Title = "Profil Bulunamadı";
+                    return View("Error", errorViewModel);
+                }
+                return View(res.Result);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult EditProfile(EverNoteUser model, HttpPostedFileBase ProfileImage)
+        {
+            ModelState.Remove("ModifiedUsername");
+            ModelState.Remove("Password");
+
+            if (ModelState.IsValid)
+            {
+
+                EvernoteUserManager eum = new EvernoteUserManager();
+                if (ProfileImage != null &&
+                    (ProfileImage.ContentType == "image/jpeg" ||
+                    ProfileImage.ContentType == "image/jpg" ||
+                    ProfileImage.ContentType == "image/png"))
+                {
+                    string filename = $"user_{model.Id}.{ProfileImage.ContentType.Split('/')[1]}";
+                    ProfileImage.SaveAs(Server.MapPath($"~/Images/{filename}"));
+                    model.ProfileImageFilename = filename;
+                }
+                BusinessLayerResult<EverNoteUser> res = eum.UpdateUser(model);
+
+                if (res.Errors.Count > 0)
+                {
+                    ErrorViewModel errorViewModel = new ErrorViewModel();
+                    errorViewModel.Items = res.Errors;
+                    errorViewModel.RedirectingUrl = "/Home/EditProfile";
+                    errorViewModel.RedirectingTimeout = 10;
+                    return View("Error", errorViewModel);
                 }
                 Session["login"] = res.Result;
                 return RedirectToAction("ShowProfile");
             }
+
             return View(model);
         }
 

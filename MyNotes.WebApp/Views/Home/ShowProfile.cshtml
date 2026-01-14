@@ -21,7 +21,7 @@
             <div class="card shadow-sm text-center">
                 <div class="card-body">
 
-                    <img src="~/images/@(string.IsNullOrEmpty(Model.ProfileImageFilename)
+                    <img src="~/Images/@(string.IsNullOrEmpty(Model.ProfileImageFilename)
                         ? "user.webp"
                         : Model.ProfileImageFilename)"
                          class="rounded-circle mb-3"
@@ -68,7 +68,7 @@
 
                         <ul class="dropdown-menu w-100 text-center">
                             <li>
-                                <a class="dropdown-item" href="/Home/EditUser">
+                                <a class="dropdown-item" href="/Home/EditProfile">
                                     <i class="bi bi-pencil-square text-primary"></i> Profili Düzenle
                                 </a>
                             </li>

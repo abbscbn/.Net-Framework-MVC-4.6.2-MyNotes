@@ -127,7 +127,47 @@ namespace MyNotes.BusinessLayer
 
         public BusinessLayerResult<EverNoteUser> UpdateUser(EverNoteUser model)
         {
-            throw new NotImplementedException();
+
+            EverNoteUser db_user = repo_user.Find(x => x.Id != model.Id && (x.Username == model.Username || x.Email == model.Email));
+
+            if (db_user != null && db_user.Id != model.Id)
+            {
+                if (db_user.Username == model.Username)
+                {
+                    res.AddError(ErrorMessageCode.UsernameAlreadyExists, "Kullanıcı adı kayıtlı.");
+                }
+                if (db_user.Email == model.Email)
+                {
+                    res.AddError(ErrorMessageCode.EmailAlreadyExists, "E-posta adresi kayıtlı.");
+                }
+                return res;
+            }
+            res.Result = repo_user.Find(x => x.Id == model.Id);
+            res.Result.Email = model.Email;
+            res.Result.Name = model.Name;
+            res.Result.Surname = model.Surname;
+            res.Result.Username = model.Username;
+
+            if (!string.IsNullOrEmpty(model.Password))
+            {
+                res.Result.Password = model.Password;
+            }
+
+            if (!string.IsNullOrEmpty(model.ProfileImageFilename))
+            {
+                res.Result.ProfileImageFilename = model.ProfileImageFilename;
+            }
+
+
+            int dbResult = repo_user.Update(res.Result);
+
+            if (dbResult < 1)
+            {
+                res.AddError(ErrorMessageCode.UserCouldNotUpdated, "Kullanıcı güncellenemedi.");
+            }
+
+            return res;
+
         }
 
         public BusinessLayerResult<EverNoteUser> DeleteUser(int id)

@@ -73,6 +73,17 @@ namespace MyNotes.DataAccessLayer.EntityFramework
 
         public int Update(T obj)
         {
+            if (obj is MyEntityBase)
+            {
+
+                MyEntityBase o = obj as MyEntityBase;
+
+                DateTime now = DateTime.Now;
+
+
+                o.ModifedOn = now;
+                o.ModifiedUsername = App.Common.getCurrentUsername(); // Şu anki kullanıcı adı
+            }
 
             return Save();
         }

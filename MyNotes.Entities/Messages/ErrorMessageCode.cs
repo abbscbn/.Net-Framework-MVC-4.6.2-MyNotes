@@ -9,8 +9,7 @@
         EmailOrPasswordWrong = 155,
         UserAlreadyActive = 156,
         UserCouldNotActive = 157,
-        ActivationIdDoesNotExists = 158
-
-
+        ActivationIdDoesNotExists = 158,
+        UserCouldNotUpdated = 159
     }
 }
