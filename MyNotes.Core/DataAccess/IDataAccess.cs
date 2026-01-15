@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MyNotes.DataAccessLayer.Abstract
+namespace MyNotes.Core.DataAccess
 {
-    public interface IRepository<T>
+    public interface IDataAccess<T>
     {
         int Insert(T obj);
         int Update(T obj);

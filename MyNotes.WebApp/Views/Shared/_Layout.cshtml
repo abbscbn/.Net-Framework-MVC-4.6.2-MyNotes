@@ -108,44 +108,9 @@
             </div>
         </div>
     </header>
-    @RenderBody();
+    @RenderBody()
     <!-- Footer-->
-    <footer class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4" style="text-align:center">
-                    <h5><strong>Site Haritası</strong></h5>
-                    <hr />
-                    <p><a href="/Home/MostLiked"><i class="bi bi-chat-heart-fill mx-1"></i>En Beğenilenler</a></p>
-                    <p>
-                        <a href="/Home/Index"> <i class="bi bi-calendar2-check mx-1"></i>Son Yazılar</a>
-                    </p>
-                    <p>
-                        <a href="/Home/About"><i class="bi bi-info-circle mx-1"></i>Hakkımızda</a>
-                    </p>
-                </div>
-                <div class="col-md-4">
-                    <h5 style="text-align:center"><strong>Başlıklar</strong></h5>
-                    <hr />
-                    <p class="m-0 text-center">Tüm Hakları Saklıdır @DateTime.Now.Year</p>
-                </div>
-                <div class="col-md-4">
-                    <h5 style="text-align:center"><strong>E-Bülten</strong></h5>
-
-                    <hr />
-                    <p class="text-center" style="font-size:small">
-                        Hakkımızda haberlere ulaşmak için E-bültene kayıt olun
-                    </p>
-                    <div class="input-group mb-3">
-
-                        <input type="text" class="form-control" placeholder="E-mail adresinizi giriniz" aria-label="Recipient’s username" aria-describedby="button-addon2">
-                        <button class="btn btn-primary" type="submit" id="button-addon2"><i class="bi bi-send"></i> Gönder</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </footer>
+    @RenderSection("footer", required: false)
     <!-- Bootstrap core JS-->
     @RenderSection("scripts", required: false)
 </body>

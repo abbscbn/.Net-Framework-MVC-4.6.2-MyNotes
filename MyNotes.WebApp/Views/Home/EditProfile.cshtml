@@ -8,8 +8,6 @@
 
 <style type="text/css">
     .validation-summary-errors {
-        
-        
         color: red;
     }
 
@@ -39,7 +37,7 @@
             <div class="col-md-4">
                 <div class="card shadow-sm text-center">
                     <div class="card-body">
-                        @Html.HiddenFor(Model=>Model.ProfileImageFilename)
+                        @Html.HiddenFor(Model => Model.ProfileImageFilename)
                         <img src="~/Images/@(string.IsNullOrEmpty(Model.ProfileImageFilename)
                             ? "user.webp"
                             : Model.ProfileImageFilename)"
@@ -128,4 +126,6 @@
         </div>
     }
 </div>
+
+@Html.Partial("_PartialFooter")
 

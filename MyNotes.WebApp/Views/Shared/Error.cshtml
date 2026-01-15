@@ -61,30 +61,23 @@
 
 @if (Model.IsRedirectingUrl)
 {
-    <script>
-      let seconds = @Model.RedirectingTimeout;
-      const el = document.getElementById("countdown");
-
-        setInterval(() => {
-        seconds--;
-        el.innerText = seconds;
-
-        if (seconds <= 0) {
-         window.location.href = "@Model.RedirectingUrl";
-        }
+    @section Scripts{
+        <script>
+        var seconds = @Model.RedirectingTimeout;
+        var countdownElement = document.getElementById('countdown');
+        setInterval(function () {
+            if (seconds > 0) {
+                seconds--;
+                countdownElement.textContent = seconds;
+            } else {
+                window.location.href = "@Model.RedirectingUrl";
+            }
         }, 1000);
-    </script>
+        </script>
+    }
 }
 
 
-@section scripts{
-    <script>
-        $(document).ready(function () {
-            $("h1").hide();
-            $("footer").hide();
-        });
-    </script>
-}
 
 
 

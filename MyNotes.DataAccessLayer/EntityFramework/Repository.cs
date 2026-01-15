@@ -1,5 +1,5 @@
 ﻿using MyNotes.Common;
-using MyNotes.DataAccessLayer.Abstract;
+using MyNotes.Core.DataAccess;
 using MyNotes.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace MyNotes.DataAccessLayer.EntityFramework
 {
-    public class Repository<T> : RepositoryBase, IRepository<T> where T : class
+    public class Repository<T> : RepositoryBase, IDataAccess<T> where T : class
     {
 
         private DbSet<T> _objectSet;

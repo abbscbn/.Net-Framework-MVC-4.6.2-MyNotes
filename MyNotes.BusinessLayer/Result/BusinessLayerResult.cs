@@ -1,7 +1,7 @@
 ﻿using MyNotes.Entities.Messages;
 using System.Collections.Generic;
 
-namespace MyNotes.BusinessLayer
+namespace MyNotes.BusinessLayer.Result
 {
     public class BusinessLayerResult<T> where T : class
     {

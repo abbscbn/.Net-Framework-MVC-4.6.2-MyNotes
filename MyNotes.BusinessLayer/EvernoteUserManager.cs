@@ -1,4 +1,6 @@
-﻿using MyNotes.Common.Helpers;
+﻿using MyNotes.BusinessLayer.Abstract;
+using MyNotes.BusinessLayer.Result;
+using MyNotes.Common.Helpers;
 using MyNotes.DataAccessLayer.EntityFramework;
 using MyNotes.Entities;
 using MyNotes.Entities.Messages;
@@ -7,15 +9,19 @@ using System;
 
 namespace MyNotes.BusinessLayer
 {
-    public class EvernoteUserManager
+    public class EvernoteUserManager : ManagerBase<EverNoteUser>
     {
 
-        private Repository<EverNoteUser> repo_user = new Repository<EverNoteUser>();
+
+        Repository<Note> repo_note = new Repository<Note>();
+        Repository<Comment> repo_comment = new Repository<Comment>();
+        Repository<Liked> repo_liked = new Repository<Liked>();
+
         private BusinessLayerResult<EverNoteUser> res = new BusinessLayerResult<EverNoteUser>();
 
         public BusinessLayerResult<EverNoteUser> RegisterUser(RegisterViewModel data)
         {
-            EverNoteUser user = repo_user.Find(x => x.Username == data.Username || x.Email == data.Email);
+            EverNoteUser user = Find(x => x.Username == data.Username || x.Email == data.Email);
 
             if (user != null)
             {
@@ -41,11 +47,11 @@ namespace MyNotes.BusinessLayer
                     IsAdmin = false
                 };
 
-                int dbResult = repo_user.Insert(user);
+                int dbResult = Insert(user);
 
                 if (dbResult > 0)
                 {
-                    res.Result = repo_user.Find(x => x.Username == user.Username);
+                    res.Result = Find(x => x.Username == user.Username);
 
                     string siteUri = ConfigHelper.Get<string>("SiteRootUri");
                     string activateUri = $"{siteUri}/Home/UserActivate/{res.Result.ActiveGuid}";
@@ -62,7 +68,7 @@ namespace MyNotes.BusinessLayer
         public BusinessLayerResult<EverNoteUser> Login(LoginViewModel data)
         {
 
-            res.Result = repo_user.Find(x => x.Username == data.Username && x.Password == data.Password);
+            res.Result = Find(x => x.Username == data.Username && x.Password == data.Password);
 
             if (res.Result != null)
             {
@@ -85,7 +91,7 @@ namespace MyNotes.BusinessLayer
         public BusinessLayerResult<EverNoteUser> UserActivate(Guid id)
         {
 
-            res.Result = repo_user.Find(x => x.ActiveGuid == id);
+            res.Result = Find(x => x.ActiveGuid == id);
 
             if (res.Result != null)
             {
@@ -97,7 +103,7 @@ namespace MyNotes.BusinessLayer
 
                 res.Result.IsActive = true;
 
-                int dbResult = repo_user.Update(res.Result);
+                int dbResult = Update(res.Result);
 
                 if (dbResult < 1)
                 {
@@ -115,7 +121,7 @@ namespace MyNotes.BusinessLayer
         public BusinessLayerResult<EverNoteUser> GetUserById(int ıd)
         {
 
-            res.Result = repo_user.Find(x => x.Id == ıd);
+            res.Result = Find(x => x.Id == ıd);
 
             if (res.Result == null)
             {
@@ -128,9 +134,9 @@ namespace MyNotes.BusinessLayer
         public BusinessLayerResult<EverNoteUser> UpdateUser(EverNoteUser model)
         {
 
-            EverNoteUser db_user = repo_user.Find(x => x.Id != model.Id && (x.Username == model.Username || x.Email == model.Email));
+            EverNoteUser db_user = Find(x => x.Id != model.Id && (x.Username == model.Username || x.Email == model.Email));
 
-            if (db_user != null && db_user.Id != model.Id)
+            if (db_user != null)
             {
                 if (db_user.Username == model.Username)
                 {
@@ -142,7 +148,7 @@ namespace MyNotes.BusinessLayer
                 }
                 return res;
             }
-            res.Result = repo_user.Find(x => x.Id == model.Id);
+            res.Result = Find(x => x.Id == model.Id);
             res.Result.Email = model.Email;
             res.Result.Name = model.Name;
             res.Result.Surname = model.Surname;
@@ -159,7 +165,7 @@ namespace MyNotes.BusinessLayer
             }
 
 
-            int dbResult = repo_user.Update(res.Result);
+            int dbResult = Update(res.Result);
 
             if (dbResult < 1)
             {
@@ -172,7 +178,42 @@ namespace MyNotes.BusinessLayer
 
         public BusinessLayerResult<EverNoteUser> DeleteUser(int id)
         {
-            throw new NotImplementedException();
+
+            EverNoteUser user = Find(x => x.Id == id);
+
+
+            foreach (Liked liked in user.Likes)
+            {
+                repo_liked.Delete(liked);
+            }
+
+            foreach (Comment comment in user.Comments)
+            {
+                repo_comment.Delete(comment);
+            }
+
+            foreach (Note note in user.Notes)
+            {
+                repo_note.Delete(note);
+            }
+
+
+
+            if (user != null)
+            {
+                int dbResult = Delete(user);
+
+                if (dbResult < 1)
+                {
+                    res.AddError(ErrorMessageCode.UserCouldNotDeleted, "Kullanıcı silinemedi.");
+                    return res;
+                }
+            }
+            else
+            {
+                res.AddError(ErrorMessageCode.UserNotFound, "Kullanıcı bulunamadı.");
+            }
+            return res;
         }
     }
 }

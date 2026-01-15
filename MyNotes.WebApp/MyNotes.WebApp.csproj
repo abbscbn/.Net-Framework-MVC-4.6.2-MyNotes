@@ -183,6 +183,7 @@
     <Content Include="Views\Shared\Warning.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\EditProfile.cshtml" />
+    <Content Include="Views\Shared\_PartialFooter.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -203,6 +204,10 @@
     <ProjectReference Include="..\MyNotes.Common\MyNotes.Common.csproj">
       <Project>{3ccf1b0d-76ce-4537-a0a7-4b8b5a414ccd}</Project>
       <Name>MyNotes.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyNotes.Core\MyNotes.Core.csproj">
+      <Project>{e9ed8040-36ad-4b9b-8e3a-c8bfc284a8fb}</Project>
+      <Name>MyNotes.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyNotes.Entities\MyNotes.Entities.csproj">
       <Project>{5ce7f2fb-1da9-4f6b-a1de-8453d674323a}</Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,19 +9,19 @@ namespace MyNotes.Entities
     [Table("EverNoteUsers")]
     public class EverNoteUser : MyEntityBase
     {
-        [StringLength(25)]
+        [DisplayName("Ad"), StringLength(25)]
         public string Name { get; set; }
 
-        [Required, StringLength(25)]
+        [DisplayName("Soyad"), Required, StringLength(25)]
         public string Surname { get; set; }
 
-        [Required, StringLength(70)]
+        [DisplayName("Email"), Required, StringLength(70)]
         public string Email { get; set; }
 
-        [Required, StringLength(50)]
+        [DisplayName("Şifre"), Required, StringLength(50)]
         public string Password { get; set; }
 
-        [Required, StringLength(30)]
+        [DisplayName("Kullanıcı Adı"), Required, StringLength(30)]
         public string Username { get; set; }
 
         [StringLength(30)]

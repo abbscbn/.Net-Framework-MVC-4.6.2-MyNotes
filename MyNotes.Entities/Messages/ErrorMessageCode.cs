@@ -10,6 +10,7 @@
         UserAlreadyActive = 156,
         UserCouldNotActive = 157,
         ActivationIdDoesNotExists = 158,
-        UserCouldNotUpdated = 159
+        UserCouldNotUpdated = 159,
+        UserCouldNotDeleted = 160
     }
 }
