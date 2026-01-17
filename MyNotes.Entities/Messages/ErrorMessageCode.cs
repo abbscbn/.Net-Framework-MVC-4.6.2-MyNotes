@@ -11,6 +11,9 @@
         UserCouldNotActive = 157,
         ActivationIdDoesNotExists = 158,
         UserCouldNotUpdated = 159,
-        UserCouldNotDeleted = 160
+        UserCouldNotDeleted = 160,
+        CategoryNotFound = 161,
+        CategoryAlreadyExists = 162,
+        CategoryCouldNotUpdated = 163
     }
 }

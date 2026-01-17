@@ -1,0 +1,110 @@
+﻿@model MyNotes.Entities.EverNoteUser
+
+@{
+    ViewBag.Title = "Kullanıcı Detayları";
+}
+
+<div class="container mt-4">
+
+    <!-- Başlık -->
+    <div class="mb-3">
+        <h3>
+            <i class="bi bi-person-badge-fill"></i> Kullanıcı Detayları
+        </h3>
+        <hr />
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <strong>Ad</strong>
+                    <div class="text-muted">@Model.Name</div>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Soyad</strong>
+                    <div class="text-muted">@Model.Surname</div>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>E-posta</strong>
+                    <div class="text-muted">@Model.Email</div>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Kullanıcı Adı</strong>
+                    <div class="text-muted">@Model.Username</div>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Profil Fotoğrafı</strong>
+                    <div class="text-muted">
+                        @if (!string.IsNullOrEmpty(Model.ProfileImageFilename))
+                        {
+                            <span class="badge bg-secondary">
+                                @Model.ProfileImageFilename
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-light text-dark">Yok</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Durum</strong>
+                    <div>
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle"></i> Aktif
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                <i class="bi bi-x-circle"></i> Pasif
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Yetki</strong>
+                    <div>
+                        @if (Model.IsAdmin)
+                        {
+                            <span class="badge bg-primary">
+                                <i class="bi bi-shield-lock-fill"></i> Admin
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                <i class="bi bi-person"></i> Kullanıcı
+                            </span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-end">
+            <a href="/User/Index" class="btn btn-secondary me-2">
+                <i class="bi bi-arrow-left"></i> Listeye Dön
+            </a>
+
+            <a href="/User/Edit/@Model.Id" class="btn btn-warning">
+                <i class="bi bi-pencil-square"></i> Düzenle
+            </a>
+        </div>
+    </div>
+
+</div>

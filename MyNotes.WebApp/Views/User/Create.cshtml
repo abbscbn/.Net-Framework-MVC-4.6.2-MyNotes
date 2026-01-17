@@ -1,0 +1,91 @@
+﻿@model MyNotes.Entities.EverNoteUser
+
+@{
+    ViewBag.Title = "Yeni Kullanıcı";
+}
+
+<div class="container mt-4">
+
+    <!-- Başlık -->
+    <div class="mb-3">
+        <h3>
+            <i class="bi bi-person-plus-fill"></i> Yeni Kullanıcı Oluştur
+        </h3>
+        <hr />
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="card shadow-sm text-bg-primary">
+            <div class="card-body">
+
+                @Html.ValidationSummary(false)
+
+                <div class="row g-3">
+
+                    <!-- Ad -->
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                       
+                    </div>
+
+                    <!-- Soyad -->
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Surname, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Surname, new { @class = "form-control" })
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
+                    </div>
+
+                    <!-- Username -->
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Username, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                    </div>
+
+                    <!-- Password -->
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+
+                   
+
+                    <!-- Checkbox Alanları -->
+                    <div class="col-12">
+                        <div class="form-check form-switch">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", role = "switch" })
+                            @Html.LabelFor(m => m.IsActive, new { @class = "form-check-label ms-2" })
+                        </div>
+
+                        <div class="form-check form-switch mt-2">
+                            @Html.CheckBoxFor(m => m.IsAdmin, new { @class = "form-check-input", role = "switch" })
+                            @Html.LabelFor(m => m.IsAdmin, new { @class = "form-check-label ms-2" })
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer text-end">
+                <a href="/User/Index" class="btn btn-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Geri
+                </a>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check-circle"></i> Kaydet
+                </button>
+            </div>
+        </div>
+    }
+
+</div>

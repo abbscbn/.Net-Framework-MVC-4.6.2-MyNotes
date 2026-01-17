@@ -1,0 +1,92 @@
+﻿@model MyNotes.Entities.EverNoteUser
+
+@{
+    ViewBag.Title = "Kullanıcı Sil";
+}
+
+<div class="container mt-4">
+
+    <!-- Başlık -->
+    <div class="mb-3">
+        <h3 class="text-danger">
+            <i class="bi bi-person-x"></i> Kullanıcı Sil
+        </h3>
+        <hr />
+    </div>
+
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+        <strong>Dikkat!</strong> Bu kullanıcıyı silmek üzeresiniz. Bu işlem geri alınamaz.
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @Html.ValidationSummary(false)
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Ad</label>
+                    <input type="text" class="form-control" value="@Model.Name" disabled />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Soyad</label>
+                    <input type="text" class="form-control" value="@Model.Surname" disabled />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Email</label>
+                    <input type="text" class="form-control" value="@Model.Email" disabled />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Kullanıcı Adı</label>
+                    <input type="text" class="form-control" value="@Model.Username" disabled />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Profil Resmi</label>
+                    <input type="text" class="form-control" value="@Model.ProfileImageFilename" disabled />
+                </div>
+
+                <!-- Switch Alanları -->
+                <div class="col-md-6">
+                    <div class="form-check form-switch mt-4">
+                        <input class="form-check-input" type="checkbox" checked="@Model.IsActive" disabled />
+                        <label class="form-check-label">
+                            Aktif Kullanıcı
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-check form-switch mt-4">
+                        <input class="form-check-input" type="checkbox" checked="@Model.IsAdmin" disabled />
+                        <label class="form-check-label">
+                            Admin Yetkisi
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-end">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <a href="/User/Index" class="btn btn-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Vazgeç
+                </a>
+
+                @Html.HiddenFor(model=>model.Id)
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Kullanıcıyı Sil
+                </button>
+            }
+        </div>
+    </div>
+</div>

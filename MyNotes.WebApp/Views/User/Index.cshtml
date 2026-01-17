@@ -1,0 +1,111 @@
+﻿@using MyNotes.Entities
+@model List<EverNoteUser>
+
+@{
+    ViewBag.Title = "Kullanıcılar";
+}
+
+<div class="container mt-4">
+
+    <!-- Başlık + Yeni Kullanıcı -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">
+            <i class="bi bi-people-fill"></i> Kullanıcılar
+        </h3>
+
+        <a href="/User/Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Yeni Kullanıcı
+        </a>
+    </div>
+
+    <!-- Kart -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Ad</th>
+                            <th>Soyad</th>
+                            <th>Email</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>Profil</th>
+                            <th class="text-center">Aktif</th>
+                            <th class="text-center">Admin</th>
+                            <th class="text-end">İşlemler</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.Surname</td>
+                                <td>@item.Email</td>
+                                <td>@item.Username</td>
+
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.ProfileImageFilename))
+                                    {
+                                        <img src="~/Images/@item.ProfileImageFilename"
+                                             class="rounded-circle"
+                                             width="40"
+                                             height="40"
+                                             alt="Profil">
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Yok</span>
+                                    }
+                                </td>
+
+                                <!-- IsActive -->
+                                <td class="text-center">
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           disabled
+                                           @(item.IsActive ? "checked" : "") />
+                                </td>
+
+                                <!-- IsAdmin -->
+                                <td class="text-center">
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           disabled
+                                           @(item.IsAdmin ? "checked" : "") />
+                                </td>
+
+                                <!-- Aksiyonlar -->
+                                <td class="text-end">
+                                    <a href="/User/Edit/@item.Id"
+                                       class="btn btn-sm btn-warning me-1"
+                                       title="Düzenle">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+
+                                    <a href="/User/Details/@item.Id"
+                                       class="btn btn-sm btn-info me-1"
+                                       title="Detay">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+                                    <a href="/User/Delete/@item.Id"
+                                       class="btn btn-sm btn-danger"
+                                       title="Sil">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

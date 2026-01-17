@@ -1,0 +1,58 @@
+﻿@model MyNotes.Entities.Category
+
+@{
+    ViewBag.Title = "Delete Category";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="fa fa-trash"></i> Kategori Silme Sayfası
+                    </h4>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <strong>Uyarı!</strong>
+                        Bu Eylem Geri Alınamaz
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Title</dt>
+                        <dd class="col-sm-8">@Model.Title</dd>
+
+                        <dt class="col-sm-4">Description</dt>
+                        <dd class="col-sm-8">@Model.Description</dd>
+
+                        <dt class="col-sm-4">Created On</dt>
+                        <dd class="col-sm-8">@Model.CreatedOn</dd>
+
+                        <dt class="col-sm-4">Modified On</dt>
+                        <dd class="col-sm-8">@Model.ModifedOn</dd>
+
+                        <dt class="col-sm-4">Modified By</dt>
+                        <dd class="col-sm-8">@Model.ModifiedUsername</dd>
+                    </dl>
+                </div>
+
+                <div class="card-footer text-end">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> İptal
+                        </a>
+
+                        <button type="submit" class="btn btn-danger ms-2">
+                            <i class="fa fa-trash"></i> Sil
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

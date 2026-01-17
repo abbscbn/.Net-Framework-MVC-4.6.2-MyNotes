@@ -1,0 +1,100 @@
+﻿@model MyNotes.Entities.Category
+
+@{
+    ViewBag.Title = "Kategori Detayı";
+}
+
+<div class="container mt-5">
+
+    <!-- BAŞLIK -->
+    <div class="row mb-3">
+        <div class="col">
+            <h2>
+                <i class="bi bi-folder2-open"></i> @ViewBag.Title
+            </h2>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8 col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-info-circle"></i> Kategori Bilgileri
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-bold text-muted">
+                            <i class="bi bi-tag"></i> Başlık
+                        </div>
+                        <div class="col-8">
+                            @Model.Title
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-bold text-muted">
+                            <i class="bi bi-text-paragraph"></i> Açıklama
+                        </div>
+                        <div class="col-8">
+                            @Model.Description
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-bold text-muted">
+                            <i class="bi bi-calendar-plus"></i> Oluşturulma
+                        </div>
+                        <div class="col-8">
+                            @Model.CreatedOn.ToString("dd.MM.yyyy HH:mm")
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-bold text-muted">
+                            <i class="bi bi-calendar-check"></i> Güncelleme
+                        </div>
+                        <div class="col-8">
+                            @Model.ModifedOn.ToString("dd.MM.yyyy HH:mm")
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4 fw-bold text-muted">
+                            <i class="bi bi-person-circle"></i> İşlemi Yapan
+                        </div>
+                        <div class="col-8">
+                            @Model.ModifiedUsername
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ALT BUTONLAR -->
+                <div class="card-footer bg-light text-end">
+
+                    <a href="/Category/Index" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Listeye Dön
+                    </a>
+
+                    <a href="/Category/Edit/@Model.Id"
+                       class="btn btn-primary btn-sm ms-2">
+                        <i class="bi bi-pencil-square"></i> Düzenle
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,93 @@
+﻿@model MyNotes.Entities.EverNoteUser
+
+@{
+    ViewBag.Title = "Kullanıcı Düzenle";
+}
+
+<div class="container mt-4">
+
+    <!-- Başlık -->
+    <div class="mb-3">
+        <h3>
+            <i class="bi bi-person-gear"></i> Kullanıcı Düzenle
+        </h3>
+        <hr />
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                @Html.ValidationSummary(false)
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Surname, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Surname, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Username, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.ProfileImageFilename, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.ProfileImageFilename, new { @class = "form-control" })
+                    </div>
+
+                    <!-- Switch Alanları -->
+                    <div class="col-md-6">
+                        <div class="form-check form-switch mt-4">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                            <label class="form-check-label">
+                                Aktif Kullanıcı
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-check form-switch mt-4">
+                            @Html.CheckBoxFor(m => m.IsAdmin, new { @class = "form-check-input" })
+                            <label class="form-check-label">
+                                Admin Yetkisi
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer text-end">
+                <a href="/User/Index" class="btn btn-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Vazgeç
+                </a>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+    }
+</div>
