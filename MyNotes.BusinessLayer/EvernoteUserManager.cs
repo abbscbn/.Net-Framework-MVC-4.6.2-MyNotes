@@ -237,14 +237,15 @@ namespace MyNotes.BusinessLayer
             {
                 user = new EverNoteUser()
                 {
-                    Username = data.Username,
+                    Username = data.Username.Trim(),
                     Name = data.Name.Trim(),
                     Surname = data.Surname.Trim(),
-                    Email = data.Email,
-                    Password = data.Password,
+                    Email = data.Email.Trim(),
+                    Password = data.Password.Trim(),
                     ActiveGuid = Guid.NewGuid(),
                     IsActive = data.IsActive,
-                    IsAdmin = data.IsAdmin
+                    IsAdmin = data.IsAdmin,
+                    ProfileImageFilename = "user.webp"
                 };
 
                 int dbResult = base.Insert(user);

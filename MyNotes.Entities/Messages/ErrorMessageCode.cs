@@ -14,6 +14,10 @@
         UserCouldNotDeleted = 160,
         CategoryNotFound = 161,
         CategoryAlreadyExists = 162,
-        CategoryCouldNotUpdated = 163
+        CategoryCouldNotUpdated = 163,
+        NoteCouldNotBeUpdated = 164,
+        NoteNotFound = 165,
+        NoteAlreadyExists = 166,
+        NoteCouldNotBeInserted = 167
     }
 }

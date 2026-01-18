@@ -1,0 +1,113 @@
+﻿@model IEnumerable<MyNotes.Entities.Note>
+
+@{
+    ViewBag.Title = "Notlar";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">📝 Notlar</h2>
+        <a href="/Note/Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Yeni Not
+        </a>
+    </div>
+
+    <!-- Desktop Table -->
+    <div class="table-responsive d-none d-lg-block">
+        <table class="table table-hover align-middle shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Kategori</th>
+                    <th>Başlık</th>
+                    <th>Özet</th>
+                    <th>Beğeni</th>
+                    <th>Durum</th>
+                    <th>Tarih</th>
+                    <th class="text-end">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Category.Title</td>
+                        <td class="fw-semibold">@item.Title</td>
+                        <td class="text-muted">
+                            @(item.Text.Length > 80 ? item.Text.Substring(0, 80) + "..." : item.Text)
+                        </td>
+                        <td>
+                            <span class="badge bg-primary">
+                                <i class="bi bi-heart-fill"></i> @item.LikeCount
+                            </span>
+                        </td>
+                        <td>
+                            @if (item.IsDraft)
+                            {
+                                <span class="badge bg-warning text-dark">Taslak</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Yayında</span>
+                            }
+                        </td>
+                        <td>@item.CreatedOn.ToString("dd.MM.yyyy")</td>
+                        <td class="text-end">
+                            <a href="/Note/Edit/@item.Id" class="btn btn-sm btn-outline-warning">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="/Note/Details/@item.Id" class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="/Note/Delete/@item.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="d-lg-none">
+        @foreach (var item in Model)
+        {
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title fw-bold">@item.Title</h5>
+                        <span class="badge bg-primary">
+                            ❤️ @item.LikeCount
+                        </span>
+                    </div>
+
+                    <h6 class="text-muted">@item.Category.Title</h6>
+
+                    <p class="card-text text-muted">
+                        @(item.Text.Length > 120 ? item.Text.Substring(0, 120) + "..." : item.Text)
+                    </p>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            @item.CreatedOn.ToString("dd.MM.yyyy")
+                        </small>
+
+                        <div>
+                            <a href="/Note/Edit/@item.Id" class="btn btn-sm btn-warning">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="/Note/Details/@item.Id" class="btn btn-sm btn-info">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="/Note/Delete/@item.Id" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

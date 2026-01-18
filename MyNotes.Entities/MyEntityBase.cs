@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,13 +10,13 @@ namespace MyNotes.Entities
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        [DisplayName("Oluşturulma Tarihi"), Required]
         public DateTime CreatedOn { get; set; }
 
-        [Required]
+        [DisplayName("Güncelleme Tarihi"), Required]
         public DateTime ModifedOn { get; set; }
 
-        [Required, StringLength(30)]
+        [DisplayName("Değişiklik Yapan Kişi"), Required, StringLength(30)]
         public string ModifiedUsername { get; set; }
 
 

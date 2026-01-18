@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,13 +9,16 @@ namespace MyNotes.Entities
     public class Note : MyEntityBase
     {
 
-        [Required, StringLength(60)]
+        [DisplayName("Başlık"), Required, StringLength(60)]
         public string Title { get; set; }
 
-        [Required, StringLength(2000)]
+        [DisplayName("Text"), Required, StringLength(2000)]
         public string Text { get; set; }
 
+        [DisplayName("Taslak Durumu")]
         public bool IsDraft { get; set; }
+
+        [DisplayName("Beğeni Sayısı")]
         public int LikeCount { get; set; }
 
         public int CategoryId { get; set; } // Category ile ilişki için yabancı anahtar

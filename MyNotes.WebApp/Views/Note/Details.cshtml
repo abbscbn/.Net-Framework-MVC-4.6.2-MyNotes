@@ -1,0 +1,88 @@
+﻿@model MyNotes.Entities.Note
+
+@{
+    ViewBag.Title = "Not Detayı";
+}
+
+<div class="container mt-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">📝 Not Detayı</h2>
+
+        <div>
+            <a href="/Note/Edit/@Model.Id" class="btn btn-warning me-2">
+                <i class="bi bi-pencil"></i> Düzenle
+            </a>
+            <a href="/Note/Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Geri
+            </a>
+        </div>
+    </div>
+
+    <!-- Note Card -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <!-- Title -->
+            <h3 class="card-title fw-bold mb-2">
+                @Model.Title
+            </h3>
+
+            <!-- Meta Info -->
+            <div class="mb-3 text-muted small">
+                <span class="me-3">
+                    <i class="bi bi-folder-fill"></i>
+                    @Model.Category.Title
+                </span>
+
+                <span class="me-3">
+                    <i class="bi bi-person-fill"></i>
+                    @Model.Owner.Name
+                </span>
+
+                <span class="me-3">
+                    <i class="bi bi-calendar-event"></i>
+                    @Model.CreatedOn.ToString("dd.MM.yyyy")
+                </span>
+            </div>
+
+            <!-- Badges -->
+            <div class="mb-3">
+                <span class="badge bg-primary me-2">
+                    ❤️ @Model.LikeCount Beğeni
+                </span>
+
+                @if (Model.IsDraft)
+                {
+                    <span class="badge bg-warning text-dark">
+                        Taslak
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-success">
+                        Yayında
+                    </span>
+                }
+            </div>
+
+            <hr />
+
+            <!-- Text -->
+            <p class="card-text fs-6" style="white-space: pre-line;">
+                @Model.Text
+            </p>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-muted d-flex justify-content-between small">
+            <span>
+                <i class="bi bi-clock-history"></i>
+                Son Güncelleme: @Model.ModifedOn.ToString("dd.MM.yyyy HH:mm")
+            </span>
+        </div>
+    </div>
+
+</div>

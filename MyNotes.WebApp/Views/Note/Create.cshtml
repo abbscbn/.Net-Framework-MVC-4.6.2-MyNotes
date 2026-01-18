@@ -1,0 +1,81 @@
+﻿@model MyNotes.Entities.Note
+
+@{
+    ViewBag.Title = "Not Oluştur";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fa fa-sticky-note"></i> Yeni Not
+                    </h4>
+                </div>
+
+                <div class="card-body">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(false)
+
+                        <!-- Title -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Title, new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(m => m.Title, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Başlık Giriniz"
+                                }
+                            })
+                        </div>
+
+                        <!-- Text -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Text, new { @class = "form-label fw-bold" })
+                            @Html.TextAreaFor(m => m.Text, 6, 30, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Buraya Yazınız..."
+                            })
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.CategoryId, "Category", new { @class = "form-label fw-bold" })
+                            @Html.DropDownList(
+                                "CategoryId",
+                                null,
+                                "Select a category",
+                                new { @class = "form-select" }
+                            )
+                        </div>
+
+                        <!-- IsDraft -->
+                        <div class="form-check mb-4">
+                            @Html.CheckBoxFor(m => m.IsDraft, new { @class = "form-check-input" })
+                            @Html.LabelFor(m => m.IsDraft, new { @class = "form-check-label ms-1" })
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                                <i class="fa fa-arrow-left"></i> Geri
+                            </a>
+
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="fa fa-save"></i> Oluştur
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

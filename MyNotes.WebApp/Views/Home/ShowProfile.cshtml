@@ -130,35 +130,44 @@
 
             <!-- İSTATİSTİKLER -->
             <div class="row mt-3">
-                <div class="col-md-4">
-                    <div class="card text-center shadow-sm">
-                        <div class="card-body">
-                            <i class="bi bi-journal-text fs-2 text-primary"></i>
-                            <h5 class="mt-2">@Model.Notes.Count</h5>
-                            <small class="text-muted">Not</small>
+                @if (Model.Notes.Count > 0)
+                {
+                    <div class="col-md-4">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-journal-text fs-2 text-primary"></i>
+                                <h5 class="mt-2">@Model.Notes.Count</h5>
+                                <small class="text-muted">Not</small>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
 
-                <div class="col-md-4">
-                    <div class="card text-center shadow-sm">
-                        <div class="card-body">
-                            <i class="bi bi-chat-dots fs-2 text-success"></i>
-                            <h5 class="mt-2">@Model.Comments.Count</h5>
-                            <small class="text-muted">Yorum</small>
+                @if (Model.Comments.Count > 0)
+                {
+                    <div class="col-md-4">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-chat-dots fs-2 text-success"></i>
+                                <h5 class="mt-2">@Model.Comments.Count</h5>
+                                <small class="text-muted">Yorum</small>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
 
-                <div class="col-md-4">
-                    <div class="card text-center shadow-sm">
-                        <div class="card-body">
-                            <i class="bi bi-heart fs-2 text-danger"></i>
-                            <h5 class="mt-2">@Model.Likes.Count</h5>
-                            <small class="text-muted">Beğeni</small>
+                @if (Model.Likes.Count>0)
+                {
+                    <div class="col-md-4">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-heart fs-2 text-danger"></i>
+                                <h5 class="mt-2">@Model.Likes.Count</h5>
+                                <small class="text-muted">Beğeni</small>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
 
         </div>
