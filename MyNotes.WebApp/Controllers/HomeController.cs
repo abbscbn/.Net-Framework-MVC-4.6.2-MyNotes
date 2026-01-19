@@ -23,7 +23,7 @@ namespace MyNotes.WebApp.Controllers
         public ActionResult Index()
         {
 
-            return View(noteManager.ListQueryable().OrderByDescending(x => x.ModifedOn).ToList());
+            return View(noteManager.ListQueryable().Where(x => x.IsDraft == false).OrderByDescending(x => x.ModifedOn).ToList());
         }
 
 
@@ -41,6 +41,8 @@ namespace MyNotes.WebApp.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.ActiveCategoryId = id;
 
             return View("Index", category.Notes.OrderByDescending(x => x.ModifedOn).ToList());
         }

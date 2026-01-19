@@ -13,6 +13,7 @@ namespace MyNotes.WebApp.Controllers
     {
         NoteManager noteManager = new NoteManager();
         CategoryManager categoryManager = new CategoryManager();
+        LikeManager likeManager = new LikeManager();
 
         public ActionResult Index()
         {
@@ -161,11 +162,37 @@ namespace MyNotes.WebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Note note = noteManager.Find(x => x.Id == id);
+
+            if (note == null)
+            {
+                return HttpNotFound();
+            }
+
             noteManager.Delete(note);
 
             return RedirectToAction("Index");
         }
 
 
+        public ActionResult MyLikedNotes()
+        {
+            EverNoteUser user = null;
+
+            if (Session["login"] != null)
+            {
+                user = Session["login"] as EverNoteUser;
+
+                var notes = likeManager.ListQueryable().Include("Note").Where(x => x.LikedUserId == user.Id).Select(x => x.Note).Include("Owner").Include("Category").OrderByDescending(x => x.ModifedOn);
+
+                return View("Index", notes.ToList());
+
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+
+        }
     }
 }
