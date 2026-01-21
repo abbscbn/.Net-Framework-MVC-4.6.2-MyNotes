@@ -20,6 +20,8 @@ namespace MyNotes.Core.DataAccess
 
         T Find(Expression<Func<T, bool>> where);
 
+        int Count(Expression<Func<T, bool>> where);
+
 
     }
 }

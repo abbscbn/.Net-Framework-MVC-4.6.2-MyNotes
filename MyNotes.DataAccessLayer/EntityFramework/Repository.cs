@@ -65,6 +65,11 @@ namespace MyNotes.DataAccessLayer.EntityFramework
             return _objectSet.Where(where).ToList();
         }
 
+        public int Count(Expression<Func<T, bool>> where)
+        {
+            return _objectSet.Count(where);
+        }
+
         public int Save()
         {
             return context.SaveChanges();

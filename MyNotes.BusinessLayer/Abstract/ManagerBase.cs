@@ -11,6 +11,11 @@ namespace MyNotes.BusinessLayer.Abstract
     {
         private Repository<T> repo = new Repository<T>();
 
+        public int Count(Expression<Func<T, bool>> where)
+        {
+            return repo.Count(where);
+        }
+
         public int Delete(T obj)
         {
             return repo.Delete(obj);
