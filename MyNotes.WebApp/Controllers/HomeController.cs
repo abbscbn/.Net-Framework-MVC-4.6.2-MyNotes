@@ -3,6 +3,7 @@ using MyNotes.BusinessLayer.Result;
 using MyNotes.Entities;
 using MyNotes.Entities.Messages;
 using MyNotes.Entities.ValueObjects;
+using MyNotes.WebApp.Filters;
 using MyNotes.WebApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Web.Mvc;
 
 namespace MyNotes.WebApp.Controllers
 {
+    [Exc]
     public class HomeController : Controller
     {
 
@@ -22,6 +24,7 @@ namespace MyNotes.WebApp.Controllers
 
         public ActionResult Index()
         {
+
 
             return View(noteManager.ListQueryable().Where(x => x.IsDraft == false).OrderByDescending(x => x.ModifedOn).ToList());
         }
@@ -168,6 +171,7 @@ namespace MyNotes.WebApp.Controllers
             return View("Ok", okViewModel);
         }
 
+        [Auth]
         public ActionResult ShowProfile()
         {
             if (Session["login"] != null)
@@ -192,6 +196,7 @@ namespace MyNotes.WebApp.Controllers
 
         }
 
+        [Auth]
         public ActionResult EditProfile()
         {
             if (Session["login"] != null)
@@ -211,6 +216,7 @@ namespace MyNotes.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        [Auth]
         [HttpPost]
         public ActionResult EditProfile(EverNoteUser model, HttpPostedFileBase ProfileImage)
         {
@@ -247,6 +253,7 @@ namespace MyNotes.WebApp.Controllers
             return View(model);
         }
 
+        [Auth]
         public ActionResult DeleteProfile(int id)
         {
 
@@ -262,6 +269,54 @@ namespace MyNotes.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public ActionResult AccessDenied()
+        {
+            ErrorViewModel error = new ErrorViewModel();
+
+
+
+            error.Title = "Yetkisiz Erişim";
+            error.Header = "Yetkisiz Erişim";
+            error.Items = new List<ErrorMessageObj> { new ErrorMessageObj() { Message = "Bu Sayfaya Erişemezsiniz" } };
+            error.IsRedirectingUrl = true;
+            error.RedirectingUrl = "/Home/Index";
+            error.RedirectingTimeout = 5;
+
+            return View("Error", error);
+
+
+        }
+
+        public ActionResult GlobalException()
+        {
+            ErrorViewModel error = new ErrorViewModel();
+
+            string msj = string.Empty;
+
+            if (TempData["LastError"] == null)
+            {
+                msj = "Genel bir hata oluştu";
+            }
+            else
+            {
+                Exception exception = TempData["LastError"] as Exception;
+
+                msj = exception.Message;
+            }
+
+
+
+            error.Title = "Genel Hata";
+            error.Header = "Hata Detayı";
+            error.Items = new List<ErrorMessageObj> { new ErrorMessageObj() { Message = msj } };
+            error.IsRedirectingUrl = true;
+            error.RedirectingUrl = "/Home/Index";
+            error.RedirectingTimeout = 5;
+
+            return View("Error", error);
+
+        }
 
 
     }

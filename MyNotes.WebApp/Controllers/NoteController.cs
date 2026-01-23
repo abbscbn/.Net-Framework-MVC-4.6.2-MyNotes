@@ -1,6 +1,7 @@
 ﻿using MyNotes.BusinessLayer;
 using MyNotes.BusinessLayer.Result;
 using MyNotes.Entities;
+using MyNotes.WebApp.Filters;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace MyNotes.WebApp.Controllers
 {
+    [Exc]
     public class NoteController : Controller
     {
         NoteManager noteManager = new NoteManager();
@@ -53,6 +55,7 @@ namespace MyNotes.WebApp.Controllers
         }
 
 
+        [Auth]
         public ActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(categoryManager.List(), "Id", "Title");
@@ -60,7 +63,7 @@ namespace MyNotes.WebApp.Controllers
             return View();
         }
 
-
+        [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Note note)
@@ -99,7 +102,7 @@ namespace MyNotes.WebApp.Controllers
             return View(note);
         }
 
-
+        [Auth]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -118,7 +121,7 @@ namespace MyNotes.WebApp.Controllers
             return View(note);
         }
 
-
+        [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Note note)
@@ -139,7 +142,7 @@ namespace MyNotes.WebApp.Controllers
             return View(note);
         }
 
-
+        [Auth]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -156,7 +159,7 @@ namespace MyNotes.WebApp.Controllers
             return View(note);
         }
 
-
+        [Auth]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -173,7 +176,7 @@ namespace MyNotes.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Auth]
         public ActionResult MyLikedNotes()
         {
             EverNoteUser user = null;
@@ -194,5 +197,24 @@ namespace MyNotes.WebApp.Controllers
 
 
         }
+
+
+        public ActionResult GetNoteDetail(int id)
+        {
+            var note = noteManager.Find(x => x.Id == id);
+
+            if (note == null)
+                return Json(null, JsonRequestBehavior.AllowGet);
+
+            return Json(new
+            {
+                title = note.Title,
+                owner = note.Owner.Username,
+                date = note.ModifedOn.ToString("dd.MM.yyyy HH:mm"),
+                text = note.Text,
+                profileImage = note.Owner.ProfileImageFilename ?? "user.webp"
+            }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

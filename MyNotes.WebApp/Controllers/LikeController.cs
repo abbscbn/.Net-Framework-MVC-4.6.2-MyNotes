@@ -1,11 +1,13 @@
 ﻿using MyNotes.BusinessLayer;
 using MyNotes.Entities;
+using MyNotes.WebApp.Filters;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace MyNotes.WebApp.Controllers
 {
+    [Exc]
     public class LikeController : Controller
     {
         LikeManager likeManager = new LikeManager();

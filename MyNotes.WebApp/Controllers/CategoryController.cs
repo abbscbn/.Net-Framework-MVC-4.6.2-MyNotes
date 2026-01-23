@@ -1,22 +1,27 @@
 ﻿using MyNotes.BusinessLayer;
 using MyNotes.BusinessLayer.Result;
 using MyNotes.Entities;
+using MyNotes.WebApp.Filters;
 using System.Net;
 using System.Web.Mvc;
 
 namespace MyNotes.WebApp.Controllers
 {
+    [Exc]
     public class CategoryController : Controller
     {
 
         CategoryManager categoryManager = new CategoryManager();
 
+        [Auth]
         public ActionResult Index()
         {
             return View(categoryManager.List());
         }
 
 
+        [AuthAdmin]
+        [Auth]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -32,14 +37,16 @@ namespace MyNotes.WebApp.Controllers
             return View(category);
         }
 
-
+        [AuthAdmin]
+        [Auth]
         public ActionResult Create()
         {
 
             return View();
         }
 
-
+        [AuthAdmin]
+        [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Category category)
@@ -60,6 +67,8 @@ namespace MyNotes.WebApp.Controllers
             return View(category);
         }
 
+        [AuthAdmin]
+        [Auth]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -75,7 +84,8 @@ namespace MyNotes.WebApp.Controllers
             return View(category);
         }
 
-
+        [AuthAdmin]
+        [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Category category)
@@ -102,7 +112,8 @@ namespace MyNotes.WebApp.Controllers
             return View(category);
         }
 
-
+        [AuthAdmin]
+        [Auth]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -118,7 +129,8 @@ namespace MyNotes.WebApp.Controllers
             return View(category);
         }
 
-
+        [AuthAdmin]
+        [Auth]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

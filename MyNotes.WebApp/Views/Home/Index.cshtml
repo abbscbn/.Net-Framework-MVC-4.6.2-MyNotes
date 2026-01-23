@@ -58,7 +58,15 @@
                             <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
                             <div class="card-body">
                                 <div class="small text-muted"><i class="bi bi-clock-history"></i> @note.ModifedOn.ToString("dd.MM.yy.HH:mm")</div>
-                                <div class="small text-muted"><i class="bi bi-person-circle"></i> @note.Owner.Username</div>
+                                <div class="small text-muted d-flex align-items-center gap-2 mt-3">
+                                    <img src="~/Images/@(note.Owner.ProfileImageFilename ?? "user.webp")"
+                                         alt="Profil Fotoğrafı"
+                                         class="rounded-circle"
+                                         width="40"
+                                         height="40" />
+
+                                    <span>@note.Owner.Username</span>
+                                </div>
                                 <h2 class="card-title h5 fw-bold my-2">@note.Title</h2>
                                 <p class="card-text">
                                     @if (string.IsNullOrEmpty(note.Text) == false && note.Text.Length > 100)
@@ -75,7 +83,6 @@
                                 <div class="d-flex justify-content-between align-items-center mt-3">
 
                                     <button class="btn btn-outline-danger btn-sm like-btn"
-                                            
                                             @(currentUser == null ? "disabled title='Beğenmek için giriş yapmalısınız'" : "")
                                             onclick="toggleLike(@note.Id, this)">
 
@@ -92,8 +99,10 @@
                                             <i class="bi bi-chat-dots"></i> Yorumlar
                                         </a>
 
-                                        <a class="btn btn-primary btn-sm" href="#!">
-                                            Daha Fazla →
+                                        <a class="btn btn-primary btn-sm"
+                                           href="javascript:void(0)"
+                                           onclick="openNoteDetailModal(@note.Id)">
+                                            Devamı
                                         </a>
                                     </div>
                                 </div>
@@ -143,8 +152,63 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="noteDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="noteDetailTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="small text-muted d-flex align-items-center gap-2 mt-3">
+                    <div>
+                        <img id="noteProfileImg"
+                             src="~/Images/user.webp"
+                             alt="Profil Fotoğrafı"
+                             class="rounded-circle"
+                             width="40"
+                             height="40" />
+
+                        <span id="noteDetailOwner"></span>
+                    </div>
+                    |
+                    <i class="bi bi-clock-history"></i>
+                    <span id="noteDetailDate"></span>
+                </div>
+
+                <hr />
+
+                <p id="noteDetailText"></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <script src="~/Scripts/comment.js"></script>
 <script src="~/Scripts/Like.js"></script>
+<script>
+    function openNoteDetailModal(noteId) {
+
+        $.get("/Note/GetNoteDetail", { id: noteId }, function (data) {
+
+            $("#noteDetailTitle").text(data.title);
+            $("#noteDetailOwner").text(data.owner);
+            $("#noteDetailDate").text(data.date);
+            $("#noteDetailText").text(data.text);
+
+
+            $("#noteProfileImg").attr("src", "/Images/" + data.profileImage);
+
+            var modal = new bootstrap.Modal(document.getElementById('noteDetailModal'));
+            modal.show();
+        });
+    }
+</script>
 
 
 @Html.Partial("_PartialFooter")

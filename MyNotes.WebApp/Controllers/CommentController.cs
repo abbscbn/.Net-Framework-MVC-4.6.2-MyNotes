@@ -1,9 +1,11 @@
 ﻿using MyNotes.BusinessLayer;
 using MyNotes.Entities;
+using MyNotes.WebApp.Filters;
 using System.Web.Mvc;
 
 namespace MyNotes.WebApp.Controllers
 {
+    [Exc]
     public class CommentController : Controller
     {
 
@@ -24,6 +26,7 @@ namespace MyNotes.WebApp.Controllers
             return PartialView("_PartialComments", comments);
         }
 
+        [Auth]
         public ActionResult Edit(int id, string text)
         {
 
@@ -55,7 +58,7 @@ namespace MyNotes.WebApp.Controllers
             return Json(new { success = true });
         }
 
-
+        [Auth]
         public ActionResult Create(int NoteId, string Text)
         {
 
@@ -98,6 +101,7 @@ namespace MyNotes.WebApp.Controllers
 
         }
 
+        [Auth]
         public ActionResult Delete(int id)
         {
             var currentUser = Session["login"] as EverNoteUser;
