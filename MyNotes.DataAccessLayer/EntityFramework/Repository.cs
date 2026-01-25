@@ -18,6 +18,7 @@ namespace MyNotes.DataAccessLayer.EntityFramework
         {
             _objectSet = context.Set<T>();
         }
+
         public int Delete(T obj)
         {
             _objectSet.Remove(obj);

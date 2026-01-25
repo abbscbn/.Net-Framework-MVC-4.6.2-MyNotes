@@ -18,6 +18,8 @@ namespace MyNotes.WebApp.Controllers
         public ActionResult GetLiked(int[] ids)
         {
             var currentUser = Session["login"] as EverNoteUser;
+            List<int> likedNoteIds = null;
+            bool success = false;
 
             if (currentUser == null)
             {
@@ -28,14 +30,19 @@ namespace MyNotes.WebApp.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
 
-            List<int> likedNoteIds = likeManager
-                .List(x => x.LikedUserId == currentUser.Id && ids.Contains(x.Note.Id))
-                .Select(x => x.Note.Id)
-                .ToList();
+            if (ids != null && ids.Any())
+            {
+                likedNoteIds = likeManager
+               .List(x => x.LikedUserId == currentUser.Id && ids.Contains(x.Note.Id))
+               .Select(x => x.Note.Id)
+               .ToList();
+                success = true;
+
+            }
 
             return Json(new
             {
-                success = true,
+                success = success,
                 result = likedNoteIds
             }, JsonRequestBehavior.AllowGet);
         }
@@ -58,8 +65,11 @@ namespace MyNotes.WebApp.Controllers
 
             if (like != null)
             {
+
                 // like kaldır
                 likeManager.Delete(like);
+                NoteManager.DecreaseLikeCount(noteId);
+
             }
             else
             {
@@ -69,6 +79,8 @@ namespace MyNotes.WebApp.Controllers
                     Note = note,
                     LikedUser = user
                 });
+                NoteManager.IncreaseLikeCount(noteId);
+
 
             }
 

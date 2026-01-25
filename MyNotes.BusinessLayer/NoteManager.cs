@@ -12,6 +12,7 @@ namespace MyNotes.BusinessLayer
         Repository<Category> repo_category = new Repository<Category>();
         Repository<EverNoteUser> repo_user = new Repository<EverNoteUser>();
 
+
         public new BusinessLayerResult<Note> Update(Note obj)
         {
             Note note = Find(x => x.Id == obj.Id);
@@ -70,6 +71,23 @@ namespace MyNotes.BusinessLayer
             }
 
             return res;
+        }
+
+
+        public void IncreaseLikeCount(int noteId)
+        {
+            ExecuteSql(
+                "UPDATE Notes SET LikeCount = LikeCount + 1 WHERE Id = @p0",
+                noteId
+            );
+        }
+
+        public void DecreaseLikeCount(int noteId)
+        {
+            ExecuteSql(
+                "UPDATE Notes SET LikeCount = LikeCount - 1 WHERE Id = @p0 AND LikeCount > 0",
+                noteId
+            );
         }
 
     }

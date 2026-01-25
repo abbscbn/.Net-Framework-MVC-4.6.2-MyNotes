@@ -23,5 +23,10 @@
                 }
             }
         }
+
+        public int ExecuteSql(string sql, params object[] parameters)
+        {
+            return context.Database.ExecuteSqlCommand(sql, parameters);
+        }
     }
 }

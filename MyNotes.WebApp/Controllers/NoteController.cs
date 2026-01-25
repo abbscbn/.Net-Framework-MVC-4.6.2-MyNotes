@@ -2,6 +2,7 @@
 using MyNotes.BusinessLayer.Result;
 using MyNotes.Entities;
 using MyNotes.WebApp.Filters;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace MyNotes.WebApp.Controllers
             }
 
 
-            var notes = noteManager.ListQueryable().Include(n => n.Category).Include(n => n.Owner).Where(x => x.Owner.Id == user.Id).OrderByDescending(x => x.ModifedOn);
+            var notes = noteManager.ListQueryable().AsNoTracking().Include(n => n.Category).Include(n => n.Owner).Where(x => x.Owner.Id == user.Id).OrderByDescending(x => x.ModifedOn);
 
             return View(notes.ToList());
 
@@ -185,7 +186,7 @@ namespace MyNotes.WebApp.Controllers
             {
                 user = Session["login"] as EverNoteUser;
 
-                var notes = likeManager.ListQueryable().Include("Note").Where(x => x.LikedUserId == user.Id).Select(x => x.Note).Include("Owner").Include("Category").OrderByDescending(x => x.ModifedOn);
+                var notes = likeManager.ListQueryable().AsNoTracking().Include("Note").Where(x => x.LikedUserId == user.Id).Select(x => x.Note).Include("Owner").Include("Category").OrderByDescending(x => x.ModifedOn);
 
                 return View("Index", notes.ToList());
 
@@ -215,6 +216,21 @@ namespace MyNotes.WebApp.Controllers
                 profileImage = note.Owner.ProfileImageFilename ?? "user.webp"
             }, JsonRequestBehavior.AllowGet);
         }
+
+
+        public ActionResult MostLiked()
+        {
+
+
+            List<Note> notes = noteManager.ListQueryable().OrderByDescending(n => n.LikeCount).ToList();
+
+            TempData["notes"] = notes;
+
+            return RedirectToAction("Index", "Home");
+
+
+        }
+
 
     }
 }

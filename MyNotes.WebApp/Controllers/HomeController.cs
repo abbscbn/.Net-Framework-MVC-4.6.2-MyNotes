@@ -7,6 +7,7 @@ using MyNotes.WebApp.Filters;
 using MyNotes.WebApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -25,8 +26,15 @@ namespace MyNotes.WebApp.Controllers
         public ActionResult Index()
         {
 
+            if (TempData["notes"] != null)
+            {
+                List<Note> notes = TempData["notes"] as List<Note>;
 
-            return View(noteManager.ListQueryable().Where(x => x.IsDraft == false).OrderByDescending(x => x.ModifedOn).ToList());
+                return View(notes);
+            }
+
+
+            return View(noteManager.ListQueryable().AsNoTracking().Where(x => x.IsDraft == false).OrderByDescending(x => x.ModifedOn).ToList());
         }
 
 

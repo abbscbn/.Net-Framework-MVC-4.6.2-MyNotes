@@ -7,7 +7,7 @@ $(function () {
         notIds.push($(e).data("note-id"));
     });
 
-    console.log(notIds);
+    
 
     $.ajax({
         method: "POST",

@@ -22,6 +22,8 @@ namespace MyNotes.Core.DataAccess
 
         int Count(Expression<Func<T, bool>> where);
 
+        int ExecuteSql(string sql, params object[] parameters);
+
 
     }
 }

@@ -21,6 +21,11 @@ namespace MyNotes.BusinessLayer.Abstract
             return repo.Delete(obj);
         }
 
+        public int ExecuteSql(string sql, params object[] parameters)
+        {
+            return repo.ExecuteSql(sql, parameters);
+        }
+
         public T Find(Expression<Func<T, bool>> where)
         {
 
