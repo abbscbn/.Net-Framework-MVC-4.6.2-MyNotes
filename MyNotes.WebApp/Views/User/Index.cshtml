@@ -19,10 +19,10 @@
     </div>
 
     <!-- Kart -->
-    <div class="card shadow-sm">
+    <div class="shadow-sm">
         <div class="card-body p-0">
 
-            <div class="table-responsive">
+            <div class="table-responsive d-none d-lg-block">
                 <table class="table table-hover align-middle mb-0">
 
                     <thead class="table-light">
@@ -80,22 +80,15 @@
 
                                 <!-- Aksiyonlar -->
                                 <td class="text-end">
-                                    <a href="/User/Edit/@item.Id"
-                                       class="btn btn-sm btn-warning me-1"
-                                       title="Düzenle">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
 
-                                    <a href="/User/Details/@item.Id"
-                                       class="btn btn-sm btn-info me-1"
-                                       title="Detay">
-                                        <i class="bi bi-eye"></i>
+                                    <a href="/User/Edit/@item.Id" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i> Düzenle
                                     </a>
-
-                                    <a href="/User/Delete/@item.Id"
-                                       class="btn btn-sm btn-danger"
-                                       title="Sil">
-                                        <i class="bi bi-trash"></i>
+                                    <a href="/User/Details/@item.Id" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i> Detay
+                                    </a>
+                                    <a href="/User/Delete/@item.Id" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i> Sil
                                     </a>
                                 </td>
                             </tr>
@@ -104,6 +97,81 @@
 
                 </table>
             </div>
+
+            <!-- Mobile Cards -->
+            <div class="d-lg-none">
+
+                @foreach (var item in Model)
+                {
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+
+                            <!-- Üst: Profil + İsim -->
+                            <div class="d-flex align-items-center mb-3">
+                                @if (!string.IsNullOrEmpty(item.ProfileImageFilename))
+                                {
+                                    <img src="~/Images/@item.ProfileImageFilename"
+                                         class="rounded-circle me-3"
+                                         width="50"
+                                         height="50"
+                                         alt="Profil">
+                                }
+                                else
+                                {
+                                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3"
+                                         style="width:50px;height:50px;">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+                                }
+
+                                <div>
+                                    <strong>@item.Name @item.Surname</strong><br />
+                                    <small class="text-muted">@item.Username</small>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <p class="mb-2">
+                                <i class="bi bi-envelope-fill"></i>
+                                <small>@item.Email</small>
+                            </p>
+
+                            <!-- Durumlar -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="badge @(item.IsActive ? "bg-success" : "bg-secondary")">
+                                        @(item.IsActive ? "Aktif" : "Pasif")
+                                    </span>
+
+                                    <span class="badge @(item.IsAdmin ? "bg-warning text-dark" : "bg-light text-dark")">
+                                        @(item.IsAdmin ? "Admin" : "Kullanıcı")
+                                    </span>
+                                </div>
+
+                                <!-- Aksiyonlar -->
+                                <div>
+                                    <a href="/User/Edit/@item.Id" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i> Düzenle
+                                    </a>
+
+                                    <a href="/User/Details/@item.Id" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i> Detay
+                                    </a>
+
+                                    <a href="/User/Delete/@item.Id" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i> Sil
+                                    </a>
+                                </div>
+                            </div>
+
+                            
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+
 
         </div>
     </div>

@@ -4,83 +4,68 @@
     ViewBag.Title = "Login";
 }
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 
-<style type="text/css">
-    .validation-summary-errors {
-        border: 1px solid black;
-        border-radius: 8px;
-        background-color: #f8f9fa;
-        color: black;
-    }
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="col-md-6 col-lg-8">
 
-        .validation-summary-errors ul {
-            padding: 10px;
-        }
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4">
 
-        .validation-summary-errors li {
-            list-style-type: none;
-        }
-</style>
+                <h3 class="text-center mb-4">
+                    <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+                </h3>
 
-<div class="container">
-
-    @using(Html.BeginForm())
-    { 
-    <div class="row">
-        <div class="col-md-3">
-
-        </div>
-
-        <div class="col-md-6">
-
-            <article class="card-body">
-                <h4 class="card-title text-center mb-4 mt-1">Giriş</h4>
-                <hr>
                 @Html.ValidationSummary(false)
-                @*<p class="text-success text-center">Some message goes here</p>*@
-                <br />
-               
-                <form>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"> <i class="fas fa-user"></i> </span>
-                            </div>
-                            @Html.TextBoxFor(model => model.Username, new { @class = "form-control", placeholder = "Kullanıcı adı", type = "text" })
-                            @*<input name="" class="form-control" placeholder="Email" type="email">*@
-                        </div> <!-- input-group.// -->
-                    </div> <!-- form-group// -->
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                            </div>
-                            @Html.TextBoxFor(model => model.Password, new { @class = "form-control", placeholder = "Şifre", type = "password" })
-                            @*<input class="form-control" placeholder="Şifre" type="password">*@
-                        </div> <!-- input-group.// -->
-                    </div> <!-- form-group// -->
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Giriş</button>
-                    </div> <!-- form-group// -->
 
-                </form>
-            </article>
+                @using (Html.BeginForm())
+                {
+                    <!-- Kullanıcı Adı -->
+                    <div class="mb-3">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </span>
+                            @Html.TextBoxFor(
+                                x => x.Username,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Kullanıcı adınızı girin"
+                                })
+                        </div>
+                    </div>
 
+                    <!-- Şifre -->
+                    <div class="mb-4">
+                        <label class="form-label">Şifre</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            @Html.PasswordFor(
+                                x => x.Password,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Şifrenizi girin"
+                                })
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-door-open"></i> Giriş Yap
+                        </button>
+                    </div>
+                }
+
+            </div>
         </div>
 
-        <div class="col-md-3">
-
-        </div>
     </div>
-    }
-
-    
 </div>
 
 

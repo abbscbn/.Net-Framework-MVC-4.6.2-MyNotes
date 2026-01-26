@@ -1,25 +1,81 @@
-﻿
-
-.like-btn {
-    transition: all 0.2s ease-in-out;
+﻿.comment-text[contenteditable="true"] {
+    border: 1px solid #0d6efd;
+    padding: 6px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
 }
 
-    .like-btn:hover {
-        background-color: #dc3545;
-        color: #fff;
-    }
-
-    .like-btn i {
-        margin-right: 4px;
-    }
-
-.card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.card-header {
+    font-size: 0.9rem;
 }
 
-    .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+.card-footer button:hover {
+    transform: scale(1.1);
+}
+
+.card img.card-img-top {
+    object-fit: cover;
+    max-height: 280px;
+}
+
+.like-action {
+    background: transparent;
+    border: none;
+    text-decoration: none;
+}
+
+    .like-action:focus {
+        box-shadow: none;
     }
+
+.like-icon {
+    font-size: 1.4rem;
+    color: #dc3545;
+    transition: transform 0.2s ease;
+}
+
+.like-count {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.like-action:hover .like-icon {
+    transform: scale(1.2);
+}
+
+.bi-heart-fill {
+    color: #dc3545;
+}
+
+.hover-underline:hover {
+    text-decoration: underline;
+}
+.card-header .dropdown button {
+    opacity: 0.6;
+}
+
+.card:hover .dropdown button {
+    opacity: 1;
+}
+
+.validation-summary-errors {
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: #d94514;
+    color: white;
+    margin-bottom: 10px;
+}
+
+    .validation-summary-errors ul {
+        padding: 10px;
+    }
+
+    .validation-summary-errors li {
+        list-style-type: none;
+    }
+
+
+
 
 

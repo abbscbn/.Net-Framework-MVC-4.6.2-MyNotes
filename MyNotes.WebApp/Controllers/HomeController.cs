@@ -19,26 +19,37 @@ namespace MyNotes.WebApp.Controllers
     public class HomeController : Controller
     {
 
+        private const int PageSize = 6;
+
         NoteManager noteManager = new NoteManager();
         CategoryManager categoryManager = new CategoryManager();
         EvernoteUserManager evernoteUserManager = new EvernoteUserManager();
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
 
-            if (TempData["notes"] != null)
-            {
-                List<Note> notes = TempData["notes"] as List<Note>;
+            var query = noteManager
+               .ListQueryable()
+               .AsNoTracking()
+               .Where(x => x.IsDraft == false);
 
-                return View(notes);
-            }
+            int totalCount = query.Count();
 
+            var notes = query
+                .OrderByDescending(x => x.ModifedOn)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
 
-            return View(noteManager.ListQueryable().AsNoTracking().Where(x => x.IsDraft == false).OrderByDescending(x => x.ModifedOn).ToList());
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / PageSize);
+
+            return View(notes);
         }
 
 
-        public ActionResult ByCategory(int? id)
+        public ActionResult ByCategory(int id, int page = 1)
         {
             if (id == null)
             {
@@ -46,24 +57,54 @@ namespace MyNotes.WebApp.Controllers
             }
 
 
-            var category = categoryManager.Find(x => x.Id == id.Value);
+            var category = categoryManager.Find(x => x.Id == id);
+
 
             if (category == null)
             {
                 return HttpNotFound();
             }
 
+
             ViewBag.ActiveCategoryId = id;
 
-            return View("Index", category.Notes.OrderByDescending(x => x.ModifedOn).ToList());
+            var query = noteManager
+               .ListQueryable()
+               .AsNoTracking()
+               .Where(x => x.IsDraft == false && x.Category.Id == id);
+
+            int totalCount = query.Count();
+
+            var notes = query
+                .OrderByDescending(x => x.ModifedOn)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / PageSize);
+
+            return View("Index", notes);
         }
 
 
-        public ActionResult MostLiked()
+        public ActionResult MostLiked(int page = 1)
         {
             NoteManager nm = new NoteManager();
 
-            return View("Index", noteManager.ListQueryable().OrderByDescending(x => x.LikeCount).ToList());
+            var query = noteManager.ListQueryable().AsNoTracking().OrderByDescending(x => x.LikeCount);
+
+            int totalCount = query.Count();
+
+            var notes = query
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / PageSize);
+
+            return View("Index", notes);
         }
 
         public ActionResult About()
@@ -180,28 +221,38 @@ namespace MyNotes.WebApp.Controllers
         }
 
         [Auth]
-        public ActionResult ShowProfile()
+        public ActionResult MyProfile()
         {
-            if (Session["login"] != null)
+            if (Session["login"] == null)
             {
-
-                EverNoteUser currentUser = Session["login"] as EverNoteUser;
-
-                BusinessLayerResult<EverNoteUser> res = evernoteUserManager.GetUserById(currentUser.Id);
-
-                if (res.Errors.Count > 0)
-                {
-                    ErrorViewModel errorViewModel = new ErrorViewModel();
-                    errorViewModel.Items = res.Errors;
-                    errorViewModel.Title = "Profil Bulunamadı";
-                    return View("Error", errorViewModel);
-                }
-                return View(res.Result);
-
+                return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction("Index");
 
+            EverNoteUser currentUser = Session["login"] as EverNoteUser;
+
+            return RedirectToAction("Profile", new { id = currentUser.Id });
+        }
+
+        [Auth]
+        public ActionResult Profile(int id)
+        {
+
+
+            BusinessLayerResult<EverNoteUser> res = evernoteUserManager.GetUserById(id);
+
+            if (res.Errors.Count > 0 || res.Result == null)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel
+                {
+                    Title = "Profil Bulunamadı",
+                    Items = res.Errors
+                };
+
+                return View("Error", errorViewModel);
+            }
+
+            return View(res.Result);
         }
 
         [Auth]

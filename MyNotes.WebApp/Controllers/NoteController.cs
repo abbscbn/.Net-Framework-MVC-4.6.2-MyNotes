@@ -2,7 +2,7 @@
 using MyNotes.BusinessLayer.Result;
 using MyNotes.Entities;
 using MyNotes.WebApp.Filters;
-using System.Collections.Generic;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -14,6 +14,9 @@ namespace MyNotes.WebApp.Controllers
     [Exc]
     public class NoteController : Controller
     {
+
+        private const int PageSize = 6;
+
         NoteManager noteManager = new NoteManager();
         CategoryManager categoryManager = new CategoryManager();
         LikeManager likeManager = new LikeManager();
@@ -36,6 +39,104 @@ namespace MyNotes.WebApp.Controllers
             var notes = noteManager.ListQueryable().AsNoTracking().Include(n => n.Category).Include(n => n.Owner).Where(x => x.Owner.Id == user.Id).OrderByDescending(x => x.ModifedOn);
 
             return View(notes.ToList());
+
+        }
+
+
+        public ActionResult MyNotes(int page = 1)
+        {
+
+            EverNoteUser currentUser = null;
+
+
+            if (Session["login"] != null)
+            {
+                currentUser = Session["login"] as EverNoteUser;
+            }
+
+            else
+            {
+                return HttpNotFound();
+            }
+
+            var query = noteManager
+               .ListQueryable()
+               .AsNoTracking()
+               .Where(x => x.OwnerId == currentUser.Id && x.IsDraft == false);
+
+            int totalCount = query.Count();
+
+            var notes = query
+                .OrderByDescending(x => x.ModifedOn)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / PageSize);
+
+            return View(notes);
+
+        }
+
+
+        public ActionResult OtherUserNotes(int id, int page = 1)
+        {
+            var query = noteManager
+              .ListQueryable()
+              .AsNoTracking()
+              .Where(x => x.OwnerId == id && x.IsDraft == false);
+
+            int totalCount = query.Count();
+
+            var notes = query
+                .OrderByDescending(x => x.ModifedOn)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / PageSize);
+
+            return View(notes);
+        }
+
+        [Auth]
+        public ActionResult MyLikedNotes(int page = 1)
+        {
+            EverNoteUser currentUser = null;
+
+
+
+            if (Session["login"] != null)
+            {
+                currentUser = Session["login"] as EverNoteUser;
+
+            }
+
+            else
+            {
+                return HttpNotFound();
+            }
+
+            var query = likeManager.ListQueryable().AsNoTracking().Include("Note").Where(x => x.LikedUserId == currentUser.Id).Select(x => x.Note).Include("Owner").Include("Category");
+
+            int totalCount = query.Count();
+
+            var notes = query
+                .OrderByDescending(x => x.ModifedOn)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / PageSize);
+
+            return View(notes);
+
 
         }
 
@@ -106,6 +207,8 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         public ActionResult Edit(int? id)
         {
+            EverNoteUser currentUser = null;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -113,6 +216,13 @@ namespace MyNotes.WebApp.Controllers
             Note note = noteManager.Find(x => x.Id == id.Value);
 
             if (note == null)
+            {
+                return HttpNotFound();
+            }
+
+            currentUser = Session["login"] as EverNoteUser;
+
+            if (note.OwnerId != currentUser.Id)
             {
                 return HttpNotFound();
             }
@@ -127,6 +237,8 @@ namespace MyNotes.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Note note)
         {
+            // POST methodu için de önlem alınacak
+
             ModelState.Remove("CreatedOn");
             ModelState.Remove("ModifedOn");
             ModelState.Remove("ModifiedUsername");
@@ -136,7 +248,7 @@ namespace MyNotes.WebApp.Controllers
 
                 noteManager.Update(note);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("MyNotes");
             }
             ViewBag.CategoryId = new SelectList(categoryManager.List(), "Id", "Title", note.CategoryId);
 
@@ -177,27 +289,7 @@ namespace MyNotes.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [Auth]
-        public ActionResult MyLikedNotes()
-        {
-            EverNoteUser user = null;
 
-            if (Session["login"] != null)
-            {
-                user = Session["login"] as EverNoteUser;
-
-                var notes = likeManager.ListQueryable().AsNoTracking().Include("Note").Where(x => x.LikedUserId == user.Id).Select(x => x.Note).Include("Owner").Include("Category").OrderByDescending(x => x.ModifedOn);
-
-                return View("Index", notes.ToList());
-
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-
-        }
 
 
         public ActionResult GetNoteDetail(int id)
@@ -218,18 +310,7 @@ namespace MyNotes.WebApp.Controllers
         }
 
 
-        public ActionResult MostLiked()
-        {
 
-
-            List<Note> notes = noteManager.ListQueryable().OrderByDescending(n => n.LikeCount).ToList();
-
-            TempData["notes"] = notes;
-
-            return RedirectToAction("Index", "Home");
-
-
-        }
 
 
     }

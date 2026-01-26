@@ -187,7 +187,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\ShowProfile.cshtml" />
+    <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Shared\Ok.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Shared\Warning.cshtml" />
@@ -211,6 +211,9 @@
     <Content Include="Views\Note\Edit.cshtml" />
     <Content Include="Views\Note\Index.cshtml" />
     <Content Include="Views\Shared\_PartialComments.cshtml" />
+    <Content Include="Views\Note\MyNotes.cshtml" />
+    <Content Include="Views\Note\OtherUserNotes.cshtml" />
+    <Content Include="Views\Note\MyLikedNotes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
