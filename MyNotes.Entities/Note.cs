@@ -21,6 +21,10 @@ namespace MyNotes.Entities
         [DisplayName("Beğeni Sayısı")]
         public int LikeCount { get; set; }
 
+        [StringLength(30)]
+        [DisplayName("Not Fotoğrafı")]
+        public string NoteImageFilename { get; set; }
+
         public int CategoryId { get; set; } // Category ile ilişki için yabancı anahtar
 
         public int OwnerId { get; set; } // EverNoteUser ile ilişki için yabancı anahtar

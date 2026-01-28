@@ -11,12 +11,12 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">
-                        <i class="fa fa-sticky-note"></i> Yeni Not
+                        <i class="fa fa-sticky-note"></i> Yeni Tarif
                     </h4>
                 </div>
 
                 <div class="card-body">
-                    @using (Html.BeginForm())
+                    @using (Html.BeginForm("Create", "Note", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
 
@@ -47,13 +47,33 @@
 
                         <!-- Category -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.CategoryId, "Category", new { @class = "form-label fw-bold" })
+                            @Html.LabelFor(m => m.CategoryId, "Kategori", new { @class = "form-label fw-bold" })
                             @Html.DropDownList(
                                 "CategoryId",
                                 null,
-                                "Select a category",
+                                "Kategori Seç",
                                 new { @class = "form-select" }
                             )
+                        </div>
+
+                        <!--  NoteImage -->
+                        <div class="mb-3">
+                            <div>
+                                @Html.HiddenFor(Model => Model.NoteImageFilename)
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tarif Resmi</label>
+                                    <input type="file"
+                                           name="NoteImageFilename"
+                                           class="form-control form-control-sm"
+                                           accept="image/*" />
+                                </div>
+
+                                <small class="text-muted">
+                                    JPG, PNG veya JPEG yükleyebilirsiniz
+                                </small>
+
+                            </div>
                         </div>
 
                         <!-- IsDraft -->

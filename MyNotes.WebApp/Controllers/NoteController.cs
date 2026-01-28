@@ -5,8 +5,10 @@ using MyNotes.WebApp.Filters;
 using System;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace MyNotes.WebApp.Controllers
@@ -20,6 +22,7 @@ namespace MyNotes.WebApp.Controllers
         NoteManager noteManager = new NoteManager();
         CategoryManager categoryManager = new CategoryManager();
         LikeManager likeManager = new LikeManager();
+        EvernoteUserManager EvernoteUserManager = new EvernoteUserManager();
 
         public ActionResult Index()
         {
@@ -59,6 +62,8 @@ namespace MyNotes.WebApp.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.currentUser = currentUser;
+
             var query = noteManager
                .ListQueryable()
                .AsNoTracking()
@@ -83,6 +88,17 @@ namespace MyNotes.WebApp.Controllers
 
         public ActionResult OtherUserNotes(int id, int page = 1)
         {
+
+
+            EverNoteUser foundedUser = EvernoteUserManager.Find(x => x.Id == id);
+
+            if (foundedUser == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.foundedUser = foundedUser.Username;
+
             var query = noteManager
               .ListQueryable()
               .AsNoTracking()
@@ -120,6 +136,8 @@ namespace MyNotes.WebApp.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.currentUser = currentUser;
 
             var query = likeManager.ListQueryable().AsNoTracking().Include("Note").Where(x => x.LikedUserId == currentUser.Id).Select(x => x.Note).Include("Owner").Include("Category");
 
@@ -168,7 +186,7 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Note note)
+        public ActionResult Create(Note note, HttpPostedFileBase NoteImageFilename)
         {
 
             ModelState.Remove("CreatedOn");
@@ -182,6 +200,17 @@ namespace MyNotes.WebApp.Controllers
                 if (user == null)
                 {
                     return RedirectToAction("Login", "Home");
+                }
+
+                if (NoteImageFilename != null &&
+                    (NoteImageFilename.ContentType == "image/jpeg" ||
+                    NoteImageFilename.ContentType == "image/jpg" ||
+                    NoteImageFilename.ContentType == "image/png"))
+                {
+                    string extension = Path.GetExtension(NoteImageFilename.FileName);
+                    string filename = $"user{user.Id}_{DateTime.Now:yyyyMMddHHmmss}{extension}";
+                    NoteImageFilename.SaveAs(Server.MapPath($"~/Images/{filename}"));
+                    note.NoteImageFilename = filename;
                 }
 
                 note.OwnerId = user.Id;
@@ -235,9 +264,15 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Note note)
+        public ActionResult Edit(Note note, HttpPostedFileBase NoteImageFilename)
         {
-            // POST methodu için de önlem alınacak
+
+            EverNoteUser currentUser = Session["login"] as EverNoteUser;
+
+            if (currentUser == null || currentUser.Id != note.OwnerId)
+            {
+                return HttpNotFound();
+            }
 
             ModelState.Remove("CreatedOn");
             ModelState.Remove("ModifedOn");
@@ -246,7 +281,25 @@ namespace MyNotes.WebApp.Controllers
             if (ModelState.IsValid)
             {
 
-                noteManager.Update(note);
+                if (NoteImageFilename != null &&
+                (NoteImageFilename.ContentType == "image/jpeg" ||
+                NoteImageFilename.ContentType == "image/jpg" ||
+                NoteImageFilename.ContentType == "image/png"))
+                {
+                    string filename = $"user{currentUser.Id}_{note.Id}.{NoteImageFilename.ContentType.Split('/')[1]}";
+                    NoteImageFilename.SaveAs(Server.MapPath($"~/Images/{filename}"));
+                    note.NoteImageFilename = filename;
+                }
+
+
+                BusinessLayerResult<Note> businessLayerResult = noteManager.Update(note);
+
+                if (businessLayerResult.Errors.Count > 0)
+                {
+                    businessLayerResult.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
+                    ViewBag.CategoryId = new SelectList(categoryManager.List(), "Id", "Title", note.CategoryId);
+                    return View(note);
+                }
 
                 return RedirectToAction("MyNotes");
             }
@@ -277,6 +330,9 @@ namespace MyNotes.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            EverNoteUser currentUser = Session["login"] as EverNoteUser;
+
+
             Note note = noteManager.Find(x => x.Id == id);
 
             if (note == null)
@@ -284,12 +340,16 @@ namespace MyNotes.WebApp.Controllers
                 return HttpNotFound();
             }
 
+            if (currentUser == null || currentUser.Id != note.OwnerId)
+            {
+                return HttpNotFound();
+            }
+
+
             noteManager.Delete(note);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("MyNotes");
         }
-
-
 
 
         public ActionResult GetNoteDetail(int id)

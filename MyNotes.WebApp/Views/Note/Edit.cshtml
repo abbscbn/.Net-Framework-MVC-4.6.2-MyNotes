@@ -11,15 +11,16 @@
             <div class="card shadow-sm bg-warning">
                 <div class="card-header text-dark">
                     <h4 class="mb-0">
-                        <i class="fa fa-edit"></i> Not Düzenleme
+                        <i class="fa fa-edit"></i> Tarif Düzenleme
                     </h4>
                 </div>
 
                 <div class="card-body">
-                    @using (Html.BeginForm())
+                    @using (Html.BeginForm("Edit", "Note", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(m => m.Id)
+                        @Html.HiddenFor(m => m.OwnerId)
 
                         @Html.ValidationSummary(false)
 
@@ -48,7 +49,7 @@
 
                         <!-- Category -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.CategoryId, "Category", new { @class = "form-label fw-bold" })
+                            @Html.LabelFor(m => m.CategoryId, "Kategori", new { @class = "form-label fw-bold" })
                             @Html.DropDownList(
                                 "CategoryId",
                                 null,
@@ -57,13 +58,33 @@
                             )
                         </div>
 
+                        <!--  NoteImage -->
+                        <div class="mb-3">
+                            <div>
+                                @Html.HiddenFor(Model => Model.NoteImageFilename)
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tarif Resmi</label>
+                                    <input type="file"
+                                           name="NoteImageFilename"
+                                           class="form-control form-control-sm"
+                                           accept="image/*" />
+                                </div>
+
+                                <small class="text-muted">
+                                    JPG, PNG veya JPEG yükleyebilirsiniz
+                                </small>
+
+                            </div>
+                        </div>
+
                         <!-- IsDraft -->
                         <div class="form-check form-switch mb-3">
                             @Html.CheckBoxFor(m => m.IsDraft, new { @class = "form-check-input", role = "switch" })
                             @Html.LabelFor(m => m.IsDraft, new { @class = "form-check-label ms-1" })
                         </div>
 
-                      
+
 
                         <!-- Buttons -->
                         <div class="d-flex justify-content-between">

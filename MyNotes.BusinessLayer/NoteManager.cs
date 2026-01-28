@@ -23,6 +23,7 @@ namespace MyNotes.BusinessLayer
                 note.Text = obj.Text;
                 note.IsDraft = obj.IsDraft;
                 note.CategoryId = obj.CategoryId;
+                note.NoteImageFilename = obj.NoteImageFilename;
 
                 if (base.Update(note) == 0)
                 {
@@ -58,6 +59,7 @@ namespace MyNotes.BusinessLayer
             note.Title = note.Title.Trim();
             note.Category = category;
             note.Owner = everNoteUser;
+            note.NoteImageFilename = note.NoteImageFilename;
 
             int dbResult = base.Insert(note);
 

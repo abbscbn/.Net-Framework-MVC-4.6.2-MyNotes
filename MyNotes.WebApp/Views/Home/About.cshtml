@@ -3,21 +3,11 @@
     ViewBag.Title = "About";
 }
 
-<div class="container-xxl">
-    <div class="row">
+<div class="container-xxl mt-3">
+    <div class="row mt-4">
         <!-- Side widgets-->
         <div class="col-md-3">
-            <!-- Search widget-->
-            @*<div class="card mb-4">
-                    <div class="card-header">Search</div>
-                    <div class="card-body">
-                        <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                        </div>
-                    </div>
-                </div>*@
-            <!-- Categories widget-->
+           
             <div class="mb-4 col-lg-12">
                 @Html.Partial("_PartialCategory")
             </div>
@@ -27,34 +17,49 @@
         <div class="col-md-9">
 
             <!-- Nested row for non-featured blog posts-->
-            <div class="row">
 
+            <div class="text-white">
 
+                <h2 class="text-center">Hakkımızda</h2>
 
-                <div class="col-lg-10 offset-1">
+                <p>
+                    Tariflerim, yemek yapmayı seven herkesin kendi tariflerini kaydedebildiği,
+                    paylaşabildiği ve diğer kullanıcıların tariflerinden ilham alabildiği
+                    sosyal bir yemek tarifi platformudur.
+                </p>
 
-                    <h2 class="text-center">Hakkımızda</h2>
+                <p>
+                    Platformumuz, kişisel tarif defteri mantığıyla çalışır. Kullanıcılar kendi
+                    tariflerini oluşturabilir, kategorilere ayırabilir ve diledikleri tarifleri
+                    toplulukla paylaşabilir. Tarifler beğenilebilir, yorumlanabilir ve böylece
+                    mutfakta edinilen deneyimler herkes için daha değerli hale gelir.
+                </p>
 
-                    <p>
-                        MyNotes, kullanıcıların notlarını kolayca oluşturup yönetebilecekleri, kategorilere ayırabilecekleri ve diğer kullanıcılarla paylaşabilecekleri bir platformdur. Amacımız, bilgi ve fikirlerin paylaşımını teşvik ederek, kullanıcıların daha verimli ve organize olmalarına yardımcı olmaktır.
-                    </p>
-                    <p>
-                        Platformumuz, kullanıcı dostu arayüzü ve güçlü özellikleri ile not alma deneyimini en üst düzeye çıkarmayı hedefler. Kategoriler sayesinde notlarınızı düzenleyebilir, etiketleme sistemi ile hızlı erişim sağlayabilirsiniz. Ayrıca, notlarınızı diğer kullanıcılarla paylaşarak bilgi alışverişinde bulunabilirsiniz.
-                    </p>
-                    <p>
-                        MyNotes ekibi olarak, kullanıcılarımızın geri bildirimlerine büyük önem veriyoruz. Platformumuzu sürekli olarak geliştirmek ve kullanıcı deneyimini iyileştirmek için çalışıyoruz. Her türlü öneri ve görüşlerinizi bizimle paylaşmaktan çekinmeyin.
-                    </p>
-                    <p>
-                        MyNotes'u tercih ettiğiniz için teşekkür ederiz. Not alma ve paylaşma deneyiminizi en iyi hale getirmek için buradayız!
-                    </p>
+                <p>
+                    Tariflerim; ev mutfağında denenen pratik tariflerden, özenle hazırlanan
+                    özel lezzetlere kadar her tarife yer veren bir paylaşım alanıdır.
+                    Her tarifin bir hikâyesi olduğuna inanıyor ve bu hikâyeleri birlikte
+                    büyütmeyi amaçlıyoruz.
+                </p>
 
+                <p>
+                    Kullanıcılarımızdan gelen geri bildirimleri önemsiyor, platformumuzu
+                    sürekli geliştirerek daha keyifli ve kolay bir kullanım sunmayı
+                    hedefliyoruz. Siz de tariflerinizi paylaşabilir, yeni lezzetler keşfedebilir
+                    ve Tariflerim topluluğunun bir parçası olabilirsiniz.
+                </p>
 
-                </div>
+                <p>
+                    Tariflerim’e hoş geldiniz. Lezzetleri birlikte paylaşalım! 🍲
+                </p>
 
             </div>
 
+
+
         </div>
     </div>
+ </div>
 
     @Html.Partial("_PartialFooter")
 

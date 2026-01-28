@@ -17,6 +17,7 @@ namespace MyNotes.BusinessLayer
         Repository<Note> repo_note = new Repository<Note>(); // not tarafı için cascade delete işlemi yapılıyor
         Repository<Comment> repo_comment = new Repository<Comment>();
         Repository<Liked> repo_liked = new Repository<Liked>();
+        NoteManager noteManager = new NoteManager();
 
         private BusinessLayerResult<EverNoteUser> res = new BusinessLayerResult<EverNoteUser>();
 
@@ -317,6 +318,13 @@ namespace MyNotes.BusinessLayer
             {
                 foreach (Liked liked in repo_liked.List(x => x.LikedUser.Id == data.Id).ToList())
                 {
+
+                    // Liked nesnesi için herbir nota ait like count sayısı azaltılır
+
+                    Note note = repo_note.Find(x => x.Id == liked.NoteId);
+
+                    noteManager.DecreaseLikeCount(note.Id);
+
                     repo_liked.Delete(liked);
                 }
                 foreach (Comment comment in repo_comment.List(x => x.Owner.Id == data.Id).ToList())

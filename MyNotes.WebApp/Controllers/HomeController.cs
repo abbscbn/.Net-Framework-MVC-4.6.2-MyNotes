@@ -282,9 +282,20 @@ namespace MyNotes.WebApp.Controllers
             ModelState.Remove("ModifiedUsername");
             ModelState.Remove("Password");
 
+            EverNoteUser currentUser = Session["login"] as EverNoteUser;
+
+            if (currentUser == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (currentUser.Id != model.Id)
+            {
+                return HttpNotFound();
+            }
+
             if (ModelState.IsValid)
             {
-
 
                 if (ProfileImage != null &&
                     (ProfileImage.ContentType == "image/jpeg" ||
@@ -306,7 +317,7 @@ namespace MyNotes.WebApp.Controllers
                     return View("Error", errorViewModel);
                 }
                 Session["login"] = res.Result;
-                return RedirectToAction("ShowProfile");
+                return RedirectToAction("MyProfile");
             }
 
             return View(model);
@@ -315,6 +326,13 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         public ActionResult DeleteProfile(int id)
         {
+            EverNoteUser currentUser = Session["login"] as EverNoteUser;
+
+            if (currentUser == null || currentUser.Id != id)
+            {
+                return HttpNotFound();
+            }
+
 
             BusinessLayerResult<EverNoteUser> res = evernoteUserManager.DeleteUser(id);
 
