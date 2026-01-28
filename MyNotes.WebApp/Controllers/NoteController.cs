@@ -225,7 +225,7 @@ namespace MyNotes.WebApp.Controllers
                 }
 
 
-                return RedirectToAction("Index");
+                return RedirectToAction("MyNotes");
             }
 
             ViewBag.CategoryId = new SelectList(categoryManager.List(), "Id", "Title", note.CategoryId);

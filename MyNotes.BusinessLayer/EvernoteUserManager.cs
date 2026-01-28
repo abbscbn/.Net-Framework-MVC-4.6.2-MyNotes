@@ -23,57 +23,65 @@ namespace MyNotes.BusinessLayer
 
         public BusinessLayerResult<EverNoteUser> RegisterUser(RegisterViewModel data)
         {
-            EverNoteUser user = Find(x => x.Username == data.Username || x.Email == data.Email);
 
-            if (user != null)
+
+            EverNoteUser userByUsername = Find(x => x.Username == data.Username);
+            EverNoteUser userByEmail = Find(x => x.Email == data.Email);
+
+            if (userByUsername != null)
             {
-                if (data.Username == user.Username)
-                {
-                    res.AddError(ErrorMessageCode.UsernameAlreadyExists, "Kullanıcı adı çoktan kayıtlı");
-                }
-                if (data.Email == user.Email)
-                {
-                    res.AddError(ErrorMessageCode.EmailAlreadyExists, "Kullanıcı adı veya e-posta adresi kayıtlı.");
-                }
+                res.AddError(ErrorMessageCode.UsernameAlreadyExists, "Kullanıcı adı çoktan kayıtlı");
             }
-            else
+
+            if (userByEmail != null)
             {
-                user = new EverNoteUser()
-                {
-                    Username = data.Username,
-                    Surname = "test",
-                    Email = data.Email,
-                    Password = data.Password,
-                    ActiveGuid = Guid.NewGuid(),
-                    IsActive = false,
-                    IsAdmin = false
-                };
+                res.AddError(ErrorMessageCode.EmailAlreadyExists, "E-posta adresi çoktan kayıtlı");
+            }
 
-                int dbResult = base.Insert(user);
+            EverNoteUser user = new EverNoteUser()
+            {
+                Username = data.Username,
+                Surname = "test",
+                Email = data.Email,
+                Password = Helpers.PasswordHelper.HashPassword(data.Password),
+                ActiveGuid = Guid.NewGuid(),
+                IsActive = false,
+                IsAdmin = false
+            };
 
-                if (dbResult > 0)
-                {
-                    res.Result = Find(x => x.Username == user.Username);
+            int dbResult = base.Insert(user);
 
-                    string siteUri = ConfigHelper.Get<string>("SiteRootUri");
-                    string activateUri = $"{siteUri}/Home/UserActivate/{res.Result.ActiveGuid}";
-                    string body = $"{res.Result.Username} Hesabınızı aktifleştirmek için <a href='{activateUri}' target='_blank'>tıklayınız.</a>";
-                    MailHelper.SendMail(body, res.Result.Email, "MyNotes Hesap Aktifleştirme");
+            if (dbResult > 0)
+            {
+                res.Result = Find(x => x.Username == user.Username);
 
+                string siteUri = ConfigHelper.Get<string>("SiteRootUri");
+                string activateUri = $"{siteUri}/Home/UserActivate/{res.Result.ActiveGuid}";
+                string body = $"{res.Result.Username} Hesabınızı aktifleştirmek için <a href='{activateUri}' target='_blank'>tıklayınız.</a>";
+                MailHelper.SendMail(body, res.Result.Email, "MyNotes Hesap Aktifleştirme");
 
-                }
 
             }
+
             return res;
         }
 
         public BusinessLayerResult<EverNoteUser> Login(LoginViewModel data)
         {
 
-            res.Result = Find(x => x.Username == data.Username && x.Password == data.Password);
+            res.Result = Find(x => x.Username == data.Username);
+
 
             if (res.Result != null)
             {
+                if (!Helpers.PasswordHelper.VerifyPassword(data.Password, res.Result.Password))
+                {
+                    res.AddError(
+                        ErrorMessageCode.EmailOrPasswordWrong,
+                        "Kullanıcı adı veya şifre hatalı."
+                    );
+                    return res;
+                }
 
                 if (!res.Result.IsActive)
                 {
@@ -158,7 +166,7 @@ namespace MyNotes.BusinessLayer
 
             if (!string.IsNullOrEmpty(model.Password))
             {
-                res.Result.Password = model.Password;
+                res.Result.Password = Helpers.PasswordHelper.HashPassword(model.Password);
             }
 
             if (!string.IsNullOrEmpty(model.ProfileImageFilename))
@@ -178,6 +186,7 @@ namespace MyNotes.BusinessLayer
 
         }
 
+        // Kullanıcı Kendini silmek isterse
         public BusinessLayerResult<EverNoteUser> DeleteUser(int id)
         {
 
@@ -189,6 +198,11 @@ namespace MyNotes.BusinessLayer
 
                 foreach (Liked liked in repo_liked.List(x => x.LikedUser.Id == id).ToList())
                 {
+
+                    Note note = repo_note.Find(x => x.Id == liked.NoteId);
+
+                    noteManager.DecreaseLikeCount(note.Id);
+
                     repo_liked.Delete(liked);
                 }
 

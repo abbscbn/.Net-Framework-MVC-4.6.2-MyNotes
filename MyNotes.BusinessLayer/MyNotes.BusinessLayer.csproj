@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Abstract\ManagerBase.cs" />
     <Compile Include="CommentManager.cs" />
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="LikeManager.cs" />
     <Compile Include="Result\BusinessLayerResult.cs" />
     <Compile Include="CategoryManager.cs" />

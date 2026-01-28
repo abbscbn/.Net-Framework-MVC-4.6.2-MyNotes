@@ -18,7 +18,7 @@ namespace MyNotes.Entities
         [DisplayName("Email"), Required, StringLength(70)]
         public string Email { get; set; }
 
-        [DisplayName("Şifre"), Required, StringLength(50)]
+        [DisplayName("Şifre"), Required, StringLength(256)]
         public string Password { get; set; }
 
         [DisplayName("Kullanıcı Adı"), Required, StringLength(30)]

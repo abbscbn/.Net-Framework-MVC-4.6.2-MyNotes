@@ -22,7 +22,7 @@ namespace MyNotes.DataAccessLayer.EntityFramework
         public DatabaseContext() : base("DatabaseContext")
         {
 
-            Database.SetInitializer(new MyInitalizer());
+            //Database.SetInitializer(new MyInitalizer());
         }
 
 

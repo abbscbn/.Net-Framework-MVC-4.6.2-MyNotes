@@ -56,6 +56,19 @@
   <ItemGroup>
     <Compile Include="EntityFramework\DatabaseContext.cs" />
     <Compile Include="EntityFramework\MyInitalizer.cs" />
+    <Compile Include="Migrations\202601272040001_InitialCreate.cs" />
+    <Compile Include="Migrations\202601272040001_InitialCreate.Designer.cs">
+      <DependentUpon>202601272040001_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202601281633243_Initial.cs" />
+    <Compile Include="Migrations\202601281633243_Initial.Designer.cs">
+      <DependentUpon>202601281633243_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202601281640109_ExpandPasswordLength.cs" />
+    <Compile Include="Migrations\202601281640109_ExpandPasswordLength.Designer.cs">
+      <DependentUpon>202601281640109_ExpandPasswordLength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityFramework\Repository.cs" />
     <Compile Include="EntityFramework\RepositoryBase.cs" />
@@ -78,7 +91,17 @@
       <Name>MyNotes.Entities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202601272040001_InitialCreate.resx">
+      <DependentUpon>202601272040001_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202601281633243_Initial.resx">
+      <DependentUpon>202601281633243_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202601281640109_ExpandPasswordLength.resx">
+      <DependentUpon>202601281640109_ExpandPasswordLength.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
