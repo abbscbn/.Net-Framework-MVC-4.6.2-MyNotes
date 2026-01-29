@@ -58,7 +58,7 @@ namespace MyNotes.BusinessLayer
                 string siteUri = ConfigHelper.Get<string>("SiteRootUri");
                 string activateUri = $"{siteUri}/Home/UserActivate/{res.Result.ActiveGuid}";
                 string body = $"{res.Result.Username} Hesabınızı aktifleştirmek için <a href='{activateUri}' target='_blank'>tıklayınız.</a>";
-                MailHelper.SendMail(body, res.Result.Email, "MyNotes Hesap Aktifleştirme");
+                MailHelper.SendMail(body, res.Result.Email, "Tariflerim Hesap Aktifleştirme");
 
 
             }
