@@ -2,6 +2,7 @@
 using MyNotes.BusinessLayer.Result;
 using MyNotes.Entities;
 using MyNotes.WebApp.Filters;
+using MyNotes.WebApp.Models;
 using System.Net;
 using System.Web.Mvc;
 
@@ -16,7 +17,7 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         public ActionResult Index()
         {
-            return View(categoryManager.List());
+            return View(CacheHelper.GetCategoriesFromCache());
         }
 
 
@@ -60,7 +61,7 @@ namespace MyNotes.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 categoryManager.Insert(category);
-
+                CacheHelper.RemoveCategoriesFromCache();
                 return RedirectToAction("Index");
             }
 
@@ -97,6 +98,7 @@ namespace MyNotes.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 BusinessLayerResult<Category> res = categoryManager.Update(category);
+                CacheHelper.RemoveCategoriesFromCache();
 
                 if (res.Errors.Count > 0)
                 {
@@ -137,6 +139,7 @@ namespace MyNotes.WebApp.Controllers
         {
             Category category = categoryManager.Find(x => x.Id == id);
             categoryManager.Delete(category);
+            CacheHelper.RemoveCategoriesFromCache();
 
             return RedirectToAction("Index");
         }

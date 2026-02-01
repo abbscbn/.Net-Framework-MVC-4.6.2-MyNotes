@@ -1,4 +1,5 @@
 ﻿@using MyNotes.Entities;
+@using MyNotes.WebApp.Models;
 @model EverNoteUser
 
 @{
@@ -9,16 +10,19 @@
 
 <div class="container mt-5">
 
-    
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="fw-bold">@ViewBag.Title</h3>
-        <a href="/Note/Create" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Yeni Tarif
-        </a>
-    </div>
+
+    @if (Model.Id == CurrentSession.User.Id)
+    {
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="fw-bold">@ViewBag.Title</h3>
+            <a href="/Note/Create" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Yeni Tarif
+            </a>
+        </div>
+    }
 
     @{
-        EverNoteUser currentUser = Session["login"] as EverNoteUser;
+        EverNoteUser currentUser = CurrentSession.User;
     }
 
 
@@ -142,7 +146,7 @@
                 @if (Model.Id == currentUser.Id)
                 {
 
-                    if (Model.Notes!=null && Model.Notes.Count > 0)
+                    if (Model.Notes != null && Model.Notes.Count > 0)
                     {
                         <div class="col-md-6">
                             <a href="/Note/MyNotes">
@@ -215,7 +219,7 @@
                 @if (Model.Id == currentUser.Id)
                 {
 
-                    if (Model.Likes!=null && Model.Likes.Count > 0)
+                    if (Model.Likes != null && Model.Likes.Count > 0)
                     {
                         <div class="col-md-6">
                             <a href="/Note/MyLikedNotes">

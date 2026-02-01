@@ -4,6 +4,7 @@ using MyNotes.Entities;
 using MyNotes.Entities.Messages;
 using MyNotes.Entities.ValueObjects;
 using MyNotes.WebApp.Filters;
+using MyNotes.WebApp.Models;
 using MyNotes.WebApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -143,7 +144,7 @@ namespace MyNotes.WebApp.Controllers
                     return View(model);
                 }
 
-                Session["login"] = res.Result;
+                CurrentSession.Set<EverNoteUser>("login", res.Result);
 
                 return RedirectToAction("Index");
             }
@@ -223,15 +224,8 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         public ActionResult MyProfile()
         {
-            if (Session["login"] == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
 
-
-            EverNoteUser currentUser = Session["login"] as EverNoteUser;
-
-            return RedirectToAction("Profile", new { id = currentUser.Id });
+            return RedirectToAction("Profile", new { id = CurrentSession.User.Id });
         }
 
         [Auth]
@@ -258,21 +252,17 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         public ActionResult EditProfile()
         {
-            if (Session["login"] != null)
-            {
-                EverNoteUser currentUser = Session["login"] as EverNoteUser;
 
-                BusinessLayerResult<EverNoteUser> res = evernoteUserManager.GetUserById(currentUser.Id);
-                if (res.Errors.Count > 0)
-                {
-                    ErrorViewModel errorViewModel = new ErrorViewModel();
-                    errorViewModel.Items = res.Errors;
-                    errorViewModel.Title = "Profil Bulunamadı";
-                    return View("Error", errorViewModel);
-                }
-                return View(res.Result);
+            BusinessLayerResult<EverNoteUser> res = evernoteUserManager.GetUserById(CurrentSession.User.Id);
+            if (res.Errors.Count > 0)
+            {
+                ErrorViewModel errorViewModel = new ErrorViewModel();
+                errorViewModel.Items = res.Errors;
+                errorViewModel.Title = "Profil Bulunamadı";
+                return View("Error", errorViewModel);
             }
-            return RedirectToAction("Index");
+            return View(res.Result);
+
         }
 
         [Auth]
@@ -282,14 +272,8 @@ namespace MyNotes.WebApp.Controllers
             ModelState.Remove("ModifiedUsername");
             ModelState.Remove("Password");
 
-            EverNoteUser currentUser = Session["login"] as EverNoteUser;
 
-            if (currentUser == null)
-            {
-                return HttpNotFound();
-            }
-
-            if (currentUser.Id != model.Id)
+            if (CurrentSession.User.Id != model.Id)
             {
                 return HttpNotFound();
             }
@@ -316,7 +300,9 @@ namespace MyNotes.WebApp.Controllers
                     errorViewModel.RedirectingTimeout = 10;
                     return View("Error", errorViewModel);
                 }
-                Session["login"] = res.Result;
+
+                CurrentSession.Set<EverNoteUser>("login", res.Result);
+
                 return RedirectToAction("MyProfile");
             }
 
@@ -326,9 +312,9 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         public ActionResult DeleteProfile(int id)
         {
-            EverNoteUser currentUser = Session["login"] as EverNoteUser;
 
-            if (currentUser == null || currentUser.Id != id)
+
+            if (CurrentSession.User.Id != id)
             {
                 return HttpNotFound();
             }

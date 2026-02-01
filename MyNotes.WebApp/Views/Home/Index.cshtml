@@ -1,5 +1,5 @@
 ﻿@using MyNotes.Entities;
-
+@using MyNotes.WebApp.Models;
 @model List<Note>
 
 @{
@@ -8,7 +8,7 @@
 
 }
 @{
-    var currentUser = Session["login"] as EverNoteUser;
+    var currentUser = CurrentSession.User;
 }
 
 
@@ -272,7 +272,7 @@
 
                 <hr />
 
-                <p id="noteDetailText"></p>
+                <p id="noteDetailText" style="white-space: pre-line;"></p>
             </div>
 
         </div>

@@ -1,0 +1,27 @@
+﻿@helper MyLinkButton(string url = "", string color = "", string icon = "", string text = "", string id = "")
+{
+
+
+
+    <a href="@url" class="btn btn-sm btn-@color" id="@id" name="@id">
+        <i class="bi bi-@icon"></i> @text
+    </a>
+
+
+
+}
+
+@helper MyLinkButton(string url = "", string color = "", string icon = "", string text = "")
+{
+
+
+
+    <a href="@url" class="btn btn-sm btn-@color">
+        <i class="bi bi-@icon"></i> @text
+    </a>
+
+
+
+}
+
+

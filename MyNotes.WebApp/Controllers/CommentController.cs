@@ -1,6 +1,7 @@
 ﻿using MyNotes.BusinessLayer;
 using MyNotes.Entities;
 using MyNotes.WebApp.Filters;
+using MyNotes.WebApp.Models;
 using System.Web.Mvc;
 
 namespace MyNotes.WebApp.Controllers
@@ -36,7 +37,7 @@ namespace MyNotes.WebApp.Controllers
                 return Json(new { Success = false, message = "Yorum Boş Bırakılamaz" });
             }
 
-            var currentUser = Session["login"] as EverNoteUser;
+
 
             var comment = CommentManager.Find(x => x.Id == id);
 
@@ -44,7 +45,7 @@ namespace MyNotes.WebApp.Controllers
             {
                 return HttpNotFound();
             }
-            if (comment.Owner.Id != currentUser.Id)
+            if (comment.Owner.Id != CurrentSession.User.Id)
             {
                 return new HttpUnauthorizedResult();
             }
@@ -68,12 +69,7 @@ namespace MyNotes.WebApp.Controllers
                 return Json(new { Success = false, message = "Yorum Boş Bırakılamaz" });
             }
 
-            var currentUser = Session["login"] as EverNoteUser;
 
-            if (currentUser == null)
-            {
-                return new HttpUnauthorizedResult();
-            }
 
 
             var Note = NoteManager.Find(x => x.Id == NoteId);
@@ -86,7 +82,7 @@ namespace MyNotes.WebApp.Controllers
             Comment comment = new Comment()
             {
                 Text = Text,
-                Owner = currentUser,
+                Owner = CurrentSession.User,
                 Note = Note
             };
 
@@ -104,7 +100,7 @@ namespace MyNotes.WebApp.Controllers
         [Auth]
         public ActionResult Delete(int id)
         {
-            var currentUser = Session["login"] as EverNoteUser;
+
             var comment = CommentManager.Find(x => x.Id == id);
 
             int note = comment.Note.Id;
@@ -113,7 +109,7 @@ namespace MyNotes.WebApp.Controllers
             {
                 return HttpNotFound();
             }
-            if (comment.Owner.Id != currentUser.Id)
+            if (comment.Owner.Id != CurrentSession.User.Id)
             {
                 return new HttpUnauthorizedResult();
             }

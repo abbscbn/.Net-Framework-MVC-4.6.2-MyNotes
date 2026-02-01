@@ -1,9 +1,10 @@
 ﻿@using MyNotes.BusinessLayer
 @using MyNotes.Entities
+@using MyNotes.WebApp.Models;
 
 @{
-    CategoryManager cm = new CategoryManager();
-    List<Category> list = cm.List();
+   
+    List<Category> list = CacheHelper.GetCategoriesFromCache();
 }
 
 <!-- Mobil Toggle -->

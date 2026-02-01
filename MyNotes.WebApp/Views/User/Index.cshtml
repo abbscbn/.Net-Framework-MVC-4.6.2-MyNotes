@@ -81,15 +81,19 @@
                                 <!-- Aksiyonlar -->
                                 <td class="text-end">
 
-                                    <a href="/User/Edit/@item.Id" class="btn btn-sm btn-warning">
-                                        <i class="bi bi-pencil"></i> Düzenle
-                                    </a>
-                                    <a href="/User/Details/@item.Id" class="btn btn-sm btn-info">
-                                        <i class="bi bi-eye"></i> Detay
-                                    </a>
-                                    <a href="/User/Delete/@item.Id" class="btn btn-sm btn-danger">
+                                    @MyCustomBootstrap.MyLinkButton($"/User/Edit/{item.Id}", "warning", "pencil", "Düzenle")
+
+                                    @MyCustomBootstrap.MyLinkButton($"/User/Details/{item.Id}", "info", "eye", "Detay")
+
+                                    @MyCustomBootstrap.MyLinkButton($"/User/Delete/{item.Id}", "danger", "trash", "Sil")
+
+
+                                    @*<a href="/User/Details/@item.Id" class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye"></i> Detay
+                                        </a>*@
+                                    @*<a href="/User/Delete/@item.Id" class="btn btn-sm btn-danger">
                                         <i class="bi bi-trash"></i> Sil
-                                    </a>
+                                    </a>*@
                                 </td>
                             </tr>
                         }
@@ -150,17 +154,12 @@
 
                                 <!-- Aksiyonlar -->
                                 <div>
-                                    <a href="/User/Edit/@item.Id" class="btn btn-sm btn-warning">
-                                        <i class="bi bi-pencil"></i> Düzenle
-                                    </a>
+                                    @MyCustomBootstrap.MyLinkButton($"/User/Edit/{item.Id}", "warning", "pencil", "Düzenle")
 
-                                    <a href="/User/Details/@item.Id" class="btn btn-sm btn-info">
-                                        <i class="bi bi-eye"></i> Detay
-                                    </a>
+                                    @MyCustomBootstrap.MyLinkButton($"/User/Details/{item.Id}", "info", "eye", "Detay")
 
-                                    <a href="/User/Delete/@item.Id" class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i> Sil
-                                    </a>
+                                    @MyCustomBootstrap.MyLinkButton($"/User/Delete/{item.Id}", "danger", "trash", "Sil")
+
                                 </div>
                             </div>
 

@@ -1,8 +1,9 @@
 ﻿@using MyNotes.Entities
+@using MyNotes.WebApp.Models;
 @model List<Comment>
 
 @{
-    var currentUser = Session["login"] as EverNoteUser;
+    var currentUser = CurrentSession.User;
 }
 
 

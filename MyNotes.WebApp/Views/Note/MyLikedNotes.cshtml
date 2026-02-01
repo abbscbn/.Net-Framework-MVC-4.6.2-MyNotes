@@ -1,5 +1,5 @@
 ﻿@using MyNotes.Entities;
-
+@using MyNotes.WebApp.Models;
 @model List<Note>
 
 @{
@@ -7,7 +7,7 @@
 
 }
 @{
-    var currentUser = Session["login"] as EverNoteUser;
+    var currentUser = CurrentSession.User;
 }
 
 <link href="~/Content/Site.css" rel="stylesheet" />

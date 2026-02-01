@@ -1,6 +1,7 @@
 ﻿using MyNotes.BusinessLayer;
 using MyNotes.Entities;
 using MyNotes.WebApp.Filters;
+using MyNotes.WebApp.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 namespace MyNotes.WebApp.Controllers
 {
     [Exc]
+    [Auth]
     public class LikeController : Controller
     {
         LikeManager likeManager = new LikeManager();
@@ -17,23 +19,15 @@ namespace MyNotes.WebApp.Controllers
 
         public ActionResult GetLiked(int[] ids)
         {
-            var currentUser = Session["login"] as EverNoteUser;
+
             List<int> likedNoteIds = null;
             bool success = false;
 
-            if (currentUser == null)
-            {
-                return Json(new
-                {
-                    success = false,
-                    redirect = "Home/Login"
-                }, JsonRequestBehavior.AllowGet);
-            }
 
             if (ids != null && ids.Any())
             {
                 likedNoteIds = likeManager
-               .List(x => x.LikedUserId == currentUser.Id && ids.Contains(x.Note.Id))
+               .List(x => x.LikedUserId == CurrentSession.User.Id && ids.Contains(x.Note.Id))
                .Select(x => x.Note.Id)
                .ToList();
                 success = true;
@@ -51,17 +45,14 @@ namespace MyNotes.WebApp.Controllers
         [HttpPost]
         public ActionResult Toggle(int noteId)
         {
-            var user = Session["login"] as EverNoteUser;
 
-            if (user == null)
-                return Json(new { success = false, message = "Giriş Yapmalısınız" });
 
             var note = NoteManager.Find(x => x.Id == noteId);
 
             if (note == null)
                 return Json(new { success = false });
 
-            var like = likeManager.Find(x => x.Note.Id == noteId && x.LikedUser.Id == user.Id);
+            var like = likeManager.Find(x => x.Note.Id == noteId && x.LikedUser.Id == CurrentSession.User.Id);
 
             if (like != null)
             {
@@ -77,7 +68,7 @@ namespace MyNotes.WebApp.Controllers
                 likeManager.Insert(new Liked
                 {
                     Note = note,
-                    LikedUser = user
+                    LikedUser = CurrentSession.User
                 });
                 NoteManager.IncreaseLikeCount(noteId);
 
